@@ -309,3 +309,137 @@ def get_mlb_team_record_info(league_id, year = datetime.now().year):
     request = requests.get(url).json()
     league_df = request
     return (league_df)
+
+def extract_espn_mlb_games_odds(game_date=None):
+    
+    
+    if game_date is None:
+        game_date = datetime.today().strftime('%Y%m%d')
+    else:
+        game_date = pd.to_datetime(game_date).strftime('%Y%m%d')
+
+    url = f"https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard?dates={game_date}"
+    
+    raw = requests.get(url).json()
+
+    if "events" not in raw or not raw["events"]:
+        return pd.DataFrame()
+
+    odds_df = pd.json_normalize(
+        raw["events"])
+    
+    
+    game_ids = []
+    dates = []
+    stadiums = []
+    away_teams = []
+    away_team_abvs = []
+    home_teams = []
+    home_team_abvs = []
+    details = []
+    over_unders = []
+    spreads = []
+    away_open_odds = []
+    away_close_odds = []
+    home_open_odds = []
+    home_close_odds = []
+    
+    for game in range(len(odds_df['competitions'])):
+        matchup = odds_df['competitions'][game][0]
+    
+        game_ids.append(matchup.get('id'))
+        dates.append(matchup.get('date'))
+    
+        venue = matchup['venue']
+        stadiums.append(venue.get('fullName'))
+    
+        away_team = matchup['competitors'][1]['team']
+        home_team = matchup['competitors'][0]['team']
+                        
+        away_teams.append(away_team.get('displayName'))
+        away_team_abvs.append(away_team.get('abbreviation'))
+        
+        home_teams.append(home_team.get('displayName'))
+        home_team_abvs.append(home_team.get('abbreviation'))
+    
+        odds_list = matchup.get('odds', [])
+    
+        if odds_list:
+            odds = odds_list[0]
+        
+            details.append(odds.get('details'))
+            over_unders.append(odds.get('overUnder'))
+            spreads.append(odds.get('spread'))
+        
+            # moneyline may also be missing
+            moneyline = odds.get('moneyline', {})
+        
+            away_ml = moneyline.get('away', {})
+            home_ml = moneyline.get('home', {})
+        
+            away_open_odds.append(away_ml.get('open', {}).get('odds'))
+            away_close_odds.append(away_ml.get('close', {}).get('odds'))
+        
+            home_open_odds.append(home_ml.get('open', {}).get('odds'))
+            home_close_odds.append(home_ml.get('close', {}).get('odds'))
+        
+        else:
+            # game started OR ESPN didn’t publish odds yet
+            details.append(None)
+            over_unders.append(None)
+            spreads.append(None)
+        
+            away_open_odds.append(None)
+            away_close_odds.append(None)
+            home_open_odds.append(None)
+            home_close_odds.append(None)
+    
+    
+        
+        
+    odds_final_df = pd.DataFrame({
+        'odds_game_id': game_ids,
+        'date_time': dates,
+        'venue': stadiums,
+        'away_team_name': away_teams,
+        'away_team_abv': away_team_abvs,
+        'away_open_odds': away_open_odds,
+        'away_close_odds': away_close_odds,
+        'home_team_name': home_teams,
+        'home_team_abv': home_team_abvs,
+        'home_open_odds': home_open_odds,
+        'home_close_odds': home_close_odds,
+        'details': details,
+        'over_under': over_unders,
+        'spread': spreads,
+        }) 
+    
+    odds_final_df = odds_final_df.sort_values(by='date_time')
+    odds_final_df['date_time'] = pd.to_datetime(odds_final_df['date_time'], utc=True)
+    odds_final_df['date_time_est'] = odds_final_df['date_time'].dt.tz_convert('America/New_York')
+    odds_final_df['est_time_str'] = odds_final_df['date_time_est'].dt.strftime('%I:%M %p')
+    
+    odds_final_df['base_key'] = (
+        odds_final_df['away_team_abv'] + " - " + odds_final_df['home_team_abv']
+    )
+    odds_final_df['game_count'] = odds_final_df.groupby('base_key').cumcount() + 1
+    
+    counts = odds_final_df['base_key'].value_counts()
+    
+    odds_final_df['game_key'] = odds_final_df.apply(
+        lambda row: (
+            f"{row['base_key']} - {row['game_count']}"
+            if counts[row['base_key']] > 1
+            else row['base_key']
+        ),
+        axis=1
+    )
+    
+    odds_final_df['away_open_odds'] = pd.to_numeric(odds_final_df['away_open_odds'], errors='coerce')
+    odds_final_df['away_close_odds'] = pd.to_numeric(odds_final_df['away_close_odds'], errors='coerce')
+    odds_final_df['home_open_odds'] = pd.to_numeric(odds_final_df['home_open_odds'], errors='coerce')
+    odds_final_df['home_close_odds'] = pd.to_numeric(odds_final_df['home_close_odds'], errors='coerce')
+    
+    odds_final_df['update_date'] = datetime.now()
+
+    return(odds_final_df)
