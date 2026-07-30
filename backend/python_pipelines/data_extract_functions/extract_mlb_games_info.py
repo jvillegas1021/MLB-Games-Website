@@ -314,12 +314,9 @@ def extract_mlb_games_today(game_date=None):
     
     
     if game_date is None:
-        game_date = datetime.today().strftime('%Y%m%d')
+        game_date = datetime.today().strftime('%Y-%m-%d')
     else:
-        game_date = pd.to_datetime(game_date).strftime('%Y%m%d')
-
-        
-    game_date = datetime.today().strftime('%Y-%m-%d')
+        game_date = pd.to_datetime(game_date).strftime('%Y-%m-%d')
     
     url = f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={game_date}&hydrate=probablePitcher(note)"
     
@@ -363,6 +360,11 @@ def extract_mlb_games_today(game_date=None):
         'game_number': game_numbers})
 
     matchups_df = matchups_df.sort_values('game_date_time')
+
+    matchups_df['team_name_key'] = (
+            matchups_df['away_team'] + " - " + matchups_df['home_team']
+    )
+    matchups_df['game_count'] = matchups_df.groupby('team_name_key').cumcount() + 1
     
     return matchups_df
 
@@ -388,6 +390,7 @@ def extract_espn_mlb_games_odds(game_date=None):
     game_ids = []
     dates = []
     stadiums = []
+    statuses = []
     away_teams = []
     away_team_abvs = []
     home_teams = []
@@ -408,6 +411,9 @@ def extract_espn_mlb_games_odds(game_date=None):
     
         venue = matchup['venue']
         stadiums.append(venue.get('fullName'))
+
+        status = matchup['status']['type']
+        statuses.append(status.get('description'))
     
         away_team = matchup['competitors'][1]['team']
         home_team = matchup['competitors'][0]['team']
@@ -417,7 +423,7 @@ def extract_espn_mlb_games_odds(game_date=None):
         
         home_teams.append(home_team.get('displayName'))
         home_team_abvs.append(home_team.get('abbreviation'))
-    
+
         odds_list = matchup.get('odds', [])
     
         if odds_list:
@@ -457,6 +463,7 @@ def extract_espn_mlb_games_odds(game_date=None):
         'odds_game_id': game_ids,
         'date_time': dates,
         'venue': stadiums,
+        'status': statuses,
         'away_team_name': away_teams,
         'away_team_abv': away_team_abvs,
         'away_open_odds': away_open_odds,
@@ -471,21 +478,10 @@ def extract_espn_mlb_games_odds(game_date=None):
         }) 
 
     
-    odds_final_df['base_key'] = (
+    odds_final_df['abv_key'] = (
         odds_final_df['away_team_abv'] + " - " + odds_final_df['home_team_abv']
     )
-    odds_final_df['game_count'] = odds_final_df.groupby('base_key').cumcount() + 1
-    
-    counts = odds_final_df['base_key'].value_counts()
-    
-    odds_final_df['game_key'] = odds_final_df.apply(
-        lambda row: (
-            f"{row['base_key']} - {row['game_count']}"
-            if counts[row['base_key']] > 1
-            else row['base_key']
-        ),
-        axis=1
-    )
+    odds_final_df['game_count'] = odds_final_df.groupby('abv_key').cumcount() + 1
     
     odds_final_df['away_open_odds'] = pd.to_numeric(odds_final_df['away_open_odds'], errors='coerce')
     odds_final_df['away_close_odds'] = pd.to_numeric(odds_final_df['away_close_odds'], errors='coerce')
