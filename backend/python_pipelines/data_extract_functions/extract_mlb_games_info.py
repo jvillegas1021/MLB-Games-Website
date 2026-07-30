@@ -310,6 +310,62 @@ def get_mlb_team_record_info(league_id, year = datetime.now().year):
     league_df = request
     return (league_df)
 
+def extract_mlb_games_today(game_date=None):
+    
+    
+    if game_date is None:
+        game_date = datetime.today().strftime('%Y%m%d')
+    else:
+        game_date = pd.to_datetime(game_date).strftime('%Y%m%d')
+
+        
+    game_date = datetime.today().strftime('%Y-%m-%d')
+    
+    url = f"https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={game_date}&hydrate=probablePitcher(note)"
+    
+    today_games_data = requests.get(url).json()
+    
+    if 'dates' not in today_games_data or not today_games_data['dates']:
+        return []
+        
+    game_obj = today_games_data['dates'][0]['games']
+    
+    game_ids = []
+    game_date_times = []
+    game_dates = []
+    away_teams = []
+    home_teams = []
+    game_numbers = []
+    
+    for game in range(0, len(game_obj)):
+        matchup = game_obj[game]
+    
+        game_ids.append(matchup.get('gamePk'))
+        game_date_times.append(matchup.get('gameDate'))
+        game_dates.append(matchup.get('officialDate'))
+    
+        away_team = matchup['teams']['away']['team']
+    
+        away_teams.append(away_team.get('name'))
+    
+        home_team = matchup['teams']['home']['team']
+    
+        home_teams.append(home_team.get('name'))
+    
+        game_numbers.append(matchup.get('gameNumber'))
+    
+    matchups_df = pd.DataFrame({
+        'game_id': game_ids,
+        'game_date_time': game_date_times,
+        'game_date': game_dates,
+        'away_team': away_teams,
+        'home_team': home_teams,
+        'game_number': game_numbers})
+
+    matchups_df = matchups_df.sort_values('game_date_time')
+    
+    return matchups_df
+
 def extract_espn_mlb_games_odds(game_date=None):
     
     
@@ -413,11 +469,7 @@ def extract_espn_mlb_games_odds(game_date=None):
         'over_under': over_unders,
         'spread': spreads,
         }) 
-    
-    odds_final_df = odds_final_df.sort_values(by='date_time')
-    odds_final_df['date_time'] = pd.to_datetime(odds_final_df['date_time'], utc=True)
-    odds_final_df['date_time_est'] = odds_final_df['date_time'].dt.tz_convert('America/New_York')
-    odds_final_df['est_time_str'] = odds_final_df['date_time_est'].dt.strftime('%I:%M %p')
+
     
     odds_final_df['base_key'] = (
         odds_final_df['away_team_abv'] + " - " + odds_final_df['home_team_abv']
@@ -439,7 +491,6 @@ def extract_espn_mlb_games_odds(game_date=None):
     odds_final_df['away_close_odds'] = pd.to_numeric(odds_final_df['away_close_odds'], errors='coerce')
     odds_final_df['home_open_odds'] = pd.to_numeric(odds_final_df['home_open_odds'], errors='coerce')
     odds_final_df['home_close_odds'] = pd.to_numeric(odds_final_df['home_close_odds'], errors='coerce')
-    
-    odds_final_df['update_date'] = datetime.now()
+
 
     return(odds_final_df)
