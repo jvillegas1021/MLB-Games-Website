@@ -5,6 +5,7 @@ create_matchup_df <- function(games_table) {
         gamePk,
         officialDate,
         status.detailedState,
+        status.abstractGameCode,
         seriesGameNumber,
         venue.name,
         gameDate,
@@ -22,6 +23,7 @@ create_matchup_df <- function(games_table) {
         Game_ID = gamePk,
         Game_Date = officialDate,
         Game_Status = status.detailedState,
+        Game_Status_Code = status.abstractGameCode,
         Game_In_Series = seriesGameNumber,
         Game_Venue = venue.name,
         Game_Time = gameDate,
@@ -2068,7 +2070,7 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_real_
       ),
       
-      Place_Bet = !is.na(Betting_Edge) & Betting_Edge > 0
+      Place_Bet = !is.na(Betting_Edge) & (!(Game_Status_Code == 'F')) & Betting_Edge > 0
       )
   return(betting_df)
 }
@@ -2110,6 +2112,7 @@ create_final_display_matchup_df <- function(matchup_df) {
             Game_Date,
             Game_Date_Time_Parsed,
             Game_Status,
+            Game_Status_Code,
             Game_Venue,
             Park_Factor,
             Game_Time,
