@@ -2022,8 +2022,10 @@ calculate_model_odds_and_edge <- function(matchup_df) {
       
       
       # compute edge using numeric odds
-      Home_Team_Betting_Edge = Home_Team_ESPN_Odds - round(Home_Odds_Num),
-      Away_Team_Betting_Edge = Away_Team_ESPN_Odds - round(Away_Odds_Num),
+      Home_Team_Open_Betting_Edge = home_open_odds - round(Home_Odds_Num),
+      Home_Team_Current_Betting_Edge = home_close_odds - round(Home_Odds_Num),
+      Away_Team_Open_Betting_Edge = away_open_odds - round(Away_Odds_Num),
+      Away_Team_Current_Betting_Edge = away_close_odds - round(Away_Odds_Num),
 
     )
   
