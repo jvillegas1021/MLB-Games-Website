@@ -105,9 +105,10 @@ export default function MatchupCard({ matchup }) {
             <p>Game Time: {matchup.Game_Time}</p>
             <p>Game Status: {matchup.Game_Status}</p>
             <p>Ball Park: {matchup.Game_Venue}</p>
-            <p>
-              Day / Night: {matchup.Day_Night === "day" ? "☀️" : "🌑"}
-            </p>
+            <p> Day / Night: {matchup.Day_Night === "day" ? "☀️" : "🌑"}</p>
+            <p> Over / Under: {matchup.Over_Under}</p>
+            <p> Moneyline: {matchup.Moneyline}</p>
+
 
             <p>
               <span style={{ fontWeight: 600, color: "#000" }}>Predicted Winner: </span>
