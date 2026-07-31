@@ -8,7 +8,11 @@ import {
   probability_color
 } from "../utility_functions/color_functions.js";
 
-import { bet_icon } from "../utility_functions/icon_functions.js";
+import { 
+  bet_icon,
+  money_icon
+ } from "../utility_functions/icon_functions.js";
+
 import WinProbBar from "./WinProbBar.jsx";
 
 
@@ -35,6 +39,9 @@ export default function MatchupCard({ matchup }) {
     
     const home_bet_icon_model = bet_icon(matchup.Home_Team_Model_Odds, matchup.Away_Team_Model_Odds);
     const away_bet_icon_model = bet_icon(matchup.Away_Team_Model_Odds, matchup.Home_Team_Model_Odds);
+
+    const home_money_icon = money_icon(matchup.Home_Team, matchup.Predicted_Winner, matchup.Place_Bet);
+    const away_money_icon = money_icon(matchup.Away_Team, matchup.Predicted_Winner, matchup.Place_Bet);
 
     return (
       <div style={{
@@ -95,7 +102,7 @@ export default function MatchupCard({ matchup }) {
               <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
               <span style={{ fontWeight: 600, color: away_edge_color }}>
                 {matchup.Away_Team_Current_Betting_Edge}
-              </span>
+              </span>   {away_money_icon}
             </div>
           </div>
 
@@ -179,7 +186,7 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
               <span style={{ fontWeight: 600, color: home_edge_color }}>
-              {matchup.Home_Team_Current_Betting_Edge} </span>
+              {matchup.Home_Team_Current_Betting_Edge} </span>   {home_money_icon}
               </div>
           </div>
         </div>
