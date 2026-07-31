@@ -1,4 +1,4 @@
-export default function WinProbBar({ probability, homeColor, awayColor, winner, homeTeam }) {
+export default function WinProbBar({ probability, homeColor, awayColor, winner, homeTeam, awayTeam}) {
     if (winner === "No Prediction") {
       return (
         <div style={{
@@ -10,10 +10,10 @@ export default function WinProbBar({ probability, homeColor, awayColor, winner, 
         }} />
       );
     }
-  
+    
     const prob = probability / 100;
   
-    const fillX = winner === homeTeam ? prob : 1 - prob;
+    const fillX = winner === awayTeam ? prob : 1 - prob;
   
     return (
       <div style={{
@@ -30,7 +30,7 @@ export default function WinProbBar({ probability, homeColor, awayColor, winner, 
           top: 0,
           bottom: 0,
           width: "100%",
-          backgroundColor: homeColor
+          backgroundColor: awayColor
         }} />
   
         <div style={{
@@ -39,7 +39,7 @@ export default function WinProbBar({ probability, homeColor, awayColor, winner, 
           top: 0,
           bottom: 0,
           width: `${(1 - fillX) * 100}%`,
-          backgroundColor: awayColor
+          backgroundColor: homeColor
         }} />
   
         <div style={{

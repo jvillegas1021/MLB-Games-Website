@@ -151,104 +151,7 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
       marginTop: "20px"
     }}
     >
-      {/* LEFT COLUMN — Home Pitch Mix */}
-      <div style={{ width: "30%", textAlign: "center" }}>
-        <h3>{matchup.Home_Pitcher} Pitch Usage </h3>
-
-        {home_pitcher_usage_list_filtered.map((u, i) => (
-          <div 
-            key={i} 
-            style={{ 
-              display: "flex", 
-              alignItems: "center", 
-              marginBottom: "8px" 
-            }}
-          >
-            <div style={{ width: "150px" }}>{u.pitch}</div>
-
-            <div 
-              style={{ 
-                height: "12px",
-                width: "200px",
-                backgroundColor: "#eee",
-                marginLeft: "10px",
-                position: "relative"
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  width: `${u.value * 2}px`,
-                  backgroundColor: "steelblue"
-                }}
-              />
-            </div>
-
-            <div style={{ marginLeft: "10px" }}>{u.value}%</div>
-          </div>
-        ))}
-        <h3> {matchup.Home_Pitcher} {last_year} - {current_year} Stats</h3>
-        <h3> Expected </h3>
-        <div>xBA - {home_pitcher_xba}</div>
-        <div>xSLG - {home_pitcher_xslg}</div>
-        <div>xISO - {home_pitcher_xiso}</div>
-        <div>xWOBA - {home_pitcher_xwoba}</div>
-        <div>xBABIP - {home_pitcher_xbabip}</div>
-
-        <h3> Standard </h3>
-        <div>ERA - {home_pitcher_era}</div>
-        <div>WHIP - {home_pitcher_whip}</div>
-        <div>FIP - {home_pitcher_fip}</div>
-        <div>OBP - {home_pitcher_obp}</div>
-        <div>OPS - {home_pitcher_ops}</div>
-        
-        <h3> / 9 </h3>
-        <div>K/9 - {home_pitcher_k_9}</div>
-        <div>BB/9 - {home_pitcher_bb_9}</div>
-        <div>H/9 - {home_pitcher_h_9}</div>
-        <div>HR/9 - {home_pitcher_hr_9}</div>
-        <div>RS/9 - {home_pitcher_rs_9}</div>
-
-        <h3> Plate Discipline </h3>
-        <div>Strike Zone % - {home_pitcher_zone_perc}</div>
-        <div>F-Strike % - {home_pitcher_f_strike_perc}</div>
-        <div>Chase % - {home_pitcher_chase_perc}</div>
-        <div>Whiff % - {home_pitcher_whiff_perc}</div>
-        <div>Contact % - {home_pitcher_contact_perc}</div>
-
-        <h3> Contact </h3>
-        <div>GB % - {home_pitcher_gb_perc}</div>
-        <div>FB % - {home_pitcher_fb_perc}</div>
-        <div>LD % - {home_pitcher_ld_perc}</div>
-        <div>Hard Hit % - {home_pitcher_hardhit_perc}</div>
-        <div>Barrel % - {home_pitcher_barrel_perc}</div>
-      </div>
-
-      {/* CENTER COLUMN — whatever you want */}
-      <div style={{ width: "30%", textAlign: "center" }}>
-        <h3>Starting Pitchers Breakdown</h3>
-
-        <div 
-          style={{ 
-            display: "flex", 
-            justifyContent: "space-between", 
-            fontSize: "32px", 
-            fontWeight: 700,
-            marginTop: "10px"
-          }}
-        >
-          <span style={{ color: compare_stat_general_color(matchup.Home_Pitcher_Score, matchup.Away_Pitcher_Score) }}>
-            {matchup.Home_Pitcher_Score}
-          </span>
-
-          <span style={{ color: compare_stat_general_color(matchup.Away_Pitcher_Score, matchup.Home_Pitcher_Score) }}>
-            {matchup.Away_Pitcher_Score}
-          </span>
-        </div>
-      </div>
-
-
-      {/* RIGHT COLUMN — Away Pitch Mix */}
+      {/* LEFT COLUMN — Away Pitch Mix */}
       <div style={{ width: "30%", textAlign: "center" }}>
         <h3>{matchup.Away_Pitcher} Pitch Usage </h3>
 
@@ -320,6 +223,103 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
         <div>LD % - {away_pitcher_ld_perc}</div>
         <div>Hard Hit % - {away_pitcher_hardhit_perc}</div>
         <div>Barrel % - {away_pitcher_barrel_perc}</div>
+      </div>
+
+      {/* CENTER COLUMN — whatever you want */}
+      <div style={{ width: "30%", textAlign: "center" }}>
+        <h3>Starting Pitchers Breakdown</h3>
+
+        <div 
+          style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            fontSize: "32px", 
+            fontWeight: 700,
+            marginTop: "10px"
+          }}
+        >
+          <span style={{ color: compare_stat_general_color(matchup.Away_Pitcher_Score, matchup.Home_Pitcher_Score) }}>
+            {matchup.Away_Pitcher_Score}
+          </span>
+
+          <span style={{ color: compare_stat_general_color(matchup.Home_Pitcher_Score, matchup.Away_Pitcher_Score) }}>
+            {matchup.Home_Pitcher_Score}
+          </span>
+        </div>
+      </div>
+
+
+      {/* RIGHT COLUMN — Home Pitch Mix */}
+      <div style={{ width: "30%", textAlign: "center" }}>
+        <h3>{matchup.Home_Pitcher} Pitch Usage </h3>
+
+        {home_pitcher_usage_list_filtered.map((u, i) => (
+          <div 
+            key={i} 
+            style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              marginBottom: "8px" 
+            }}
+          >
+            <div style={{ width: "150px" }}>{u.pitch}</div>
+
+            <div 
+              style={{ 
+                height: "12px",
+                width: "200px",
+                backgroundColor: "#eee",
+                marginLeft: "10px",
+                position: "relative"
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: `${u.value * 2}px`,
+                  backgroundColor: "steelblue"
+                }}
+              />
+            </div>
+
+            <div style={{ marginLeft: "10px" }}>{u.value}%</div>
+          </div>
+        ))}
+        <h3> {matchup.Home_Pitcher} {last_year} - {current_year} Stats</h3>
+        <h3> Expected </h3>
+        <div>xBA - {home_pitcher_xba}</div>
+        <div>xSLG - {home_pitcher_xslg}</div>
+        <div>xISO - {home_pitcher_xiso}</div>
+        <div>xWOBA - {home_pitcher_xwoba}</div>
+        <div>xBABIP - {home_pitcher_xbabip}</div>
+
+        <h3> Standard </h3>
+        <div>ERA - {home_pitcher_era}</div>
+        <div>WHIP - {home_pitcher_whip}</div>
+        <div>FIP - {home_pitcher_fip}</div>
+        <div>OBP - {home_pitcher_obp}</div>
+        <div>OPS - {home_pitcher_ops}</div>
+        
+        <h3> / 9 </h3>
+        <div>K/9 - {home_pitcher_k_9}</div>
+        <div>BB/9 - {home_pitcher_bb_9}</div>
+        <div>H/9 - {home_pitcher_h_9}</div>
+        <div>HR/9 - {home_pitcher_hr_9}</div>
+        <div>RS/9 - {home_pitcher_rs_9}</div>
+
+        <h3> Plate Discipline </h3>
+        <div>Strike Zone % - {home_pitcher_zone_perc}</div>
+        <div>F-Strike % - {home_pitcher_f_strike_perc}</div>
+        <div>Chase % - {home_pitcher_chase_perc}</div>
+        <div>Whiff % - {home_pitcher_whiff_perc}</div>
+        <div>Contact % - {home_pitcher_contact_perc}</div>
+
+        <h3> Contact </h3>
+        <div>GB % - {home_pitcher_gb_perc}</div>
+        <div>FB % - {home_pitcher_fb_perc}</div>
+        <div>LD % - {home_pitcher_ld_perc}</div>
+        <div>Hard Hit % - {home_pitcher_hardhit_perc}</div>
+        <div>Barrel % - {home_pitcher_barrel_perc}</div>
       </div>
     </div>
   );
