@@ -18,8 +18,8 @@ export default function MatchupCard({ matchup }) {
 
     const prediction_color = prediction_status_color(matchup.Prediction_Status);
 
-    const home_edge_color = edge_color(matchup.Home_Team_Betting_Edge);
-    const away_edge_color = edge_color(matchup.Away_Team_Betting_Edge);
+    const home_edge_color = edge_color(matchup.Home_Team_Current_Betting_Edge);
+    const away_edge_color = edge_color(matchup.Away_Team_Current_Betting_Edge);
 
     const home_era_color = era_color(matchup.Home_Pitcher_ERA);
     const away_era_color = era_color(matchup.Away_Pitcher_ERA);
@@ -28,9 +28,10 @@ export default function MatchupCard({ matchup }) {
     const away_pitcher_record_color = win_loss_color(matchup.Away_Pitcher_Wins, matchup.Away_Pitcher_Losses);
 
     const win_probability_color = probability_color(matchup.Win_Probability);
+    const predicted_winner_color = mlb_team_colors[matchup.Predicted_Winner];
 
-    const home_bet_icon_espn = bet_icon(matchup.Home_Team_ESPN_Odds, matchup.Away_Team_ESPN_Odds);
-    const away_bet_icon_espn = bet_icon(matchup.Away_Team_ESPN_Odds, matchup.Home_Team_ESPN_Odds);
+    const home_bet_icon_espn = bet_icon(matchup.Home_Team_Current_Odds, matchup.Away_Team_Current_Odds);
+    const away_bet_icon_espn = bet_icon(matchup.Away_Team_Current_Odds, matchup.Home_Team_Current_Odds);
     
     const home_bet_icon_model = bet_icon(matchup.Home_Team_Model_Odds, matchup.Away_Team_Model_Odds);
     const away_bet_icon_model = bet_icon(matchup.Away_Team_Model_Odds, matchup.Home_Team_Model_Odds);
@@ -50,43 +51,52 @@ export default function MatchupCard({ matchup }) {
           justifyContent: 'space-between',
           width: '100%'
         }}>
-          {/* LEFT: Home team */}
+          {/* LEFT: Away team */}
           <div style={{ width: '30%', textAlign: 'center' }}>
             <img
-              src={`/mlb_logos/${matchup.Home_Team}.png`}
-              alt={matchup.Home_Team}
+              src={`/mlb_logos/${matchup.Away_Team}.png`}
+              alt={matchup.Away_Team}
               style={{ width: '80px' }}
             />
-            <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: home_team_color }}>
-              {matchup.Home_Team}
+            <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: away_team_color }}>
+              {matchup.Away_Team}
             </div>
             <div style={{ fontSize: "18px", fontWeight: 600, marginTop: 4, color: "#000" }}>
-              Home
+                Away
             </div>
-            <div style={{fontWeight: 660, marginTop: 4, color: "black" }}>
-              {matchup.Home_Pitcher} ({matchup.Home_Pitcher_Hand})
+            <div style={{ fontWeight: 660, marginTop: 4, color: "black" }}>
+              {matchup.Away_Pitcher} ({matchup.Away_Pitcher_Hand})
             </div>
             <div>
               <span style={{ fontWeight: 600, color: "#000" }}>W-L: </span>
-              <span style={{ fontWeight: 600, color: home_pitcher_record_color }}>{matchup.Home_Pitcher_Wins} - {matchup.Home_Pitcher_Losses}</span>
+              <span style={{ fontWeight: 600, color: away_pitcher_record_color }}>
+                {matchup.Away_Pitcher_Wins} - {matchup.Away_Pitcher_Losses}
+              </span>
             </div>
             <div>
               <span style={{ fontWeight: 600, color: "#000" }}>ERA: </span>
-              <span style={{ fontWeight: 600, color: home_era_color }}> {matchup.Home_Pitcher_ERA}</span>
-              </div>
+              <span style={{ fontWeight: 600, color: away_era_color }}>
+                {matchup.Away_Pitcher_ERA}
+              </span>
+            </div>
             <div>
               <span style={{ fontWeight: 600, color: "#000" }}>ESPN Odds: </span>
-              <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_ESPN_Odds}</span> {home_bet_icon_espn}
-              </div>
+              <span style={{ fontWeight: 600, color: "#000"}}>
+                {matchup.Away_Team_Current_Odds}
+              </span> {away_bet_icon_espn}
+            </div>
             <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>Model Odds: </span>
-            <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_Model_Odds}</span> {home_bet_icon_model}
-              </div>
+              <span style={{ fontWeight: 600, color: "#000" }}>Model Odds: </span>
+              <span style={{ fontWeight: 600, color: "#000"}}>
+                {matchup.Away_Team_Model_Odds}
+              </span> {away_bet_icon_model}
+            </div>
             <div>
               <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
-              <span style={{ fontWeight: 600, color: home_edge_color }}>
-              {matchup.Home_Team_Betting_Edge} </span>
-              </div>
+              <span style={{ fontWeight: 600, color: away_edge_color }}>
+                {matchup.Away_Team_Current_Betting_Edge}
+              </span>
+            </div>
           </div>
 
           {/* CENTER: Game info */}
@@ -101,7 +111,7 @@ export default function MatchupCard({ matchup }) {
 
             <p>
               <span style={{ fontWeight: 600, color: "#000" }}>Predicted Winner: </span>
-              <span style={{fontWeight: 700, color: "#000"}}>{matchup.Predicted_Winner}</span>
+              <span style={{fontWeight: 700, color: predicted_winner_color}}>{matchup.Predicted_Winner}</span>
               <img
                 src={`/mlb_logos/${matchup.Predicted_Winner}.png`}
                 onError={(e) => { e.target.src = "/mlb_logos/MLB-Logo.png"; }}
@@ -133,52 +143,43 @@ export default function MatchupCard({ matchup }) {
 
           </div>
 
-          {/* RIGHT: Away team */}
+          {/* RIGHT: Home team */}
         <div style={{ width: '30%', textAlign: 'center' }}>
-          <img
-            src={`/mlb_logos/${matchup.Away_Team}.png`}
-            alt={matchup.Away_Team}
-            style={{ width: '80px' }}
-          />
-          <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: away_team_color }}>
-            {matchup.Away_Team}
-          </div>
-          <div style={{ fontSize: "18px", fontWeight: 600, marginTop: 4, color: "#000" }}>
-              Away
+            <img
+              src={`/mlb_logos/${matchup.Home_Team}.png`}
+              alt={matchup.Home_Team}
+              style={{ width: '80px' }}
+            />
+            <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: home_team_color }}>
+              {matchup.Home_Team}
             </div>
-          <div style={{ fontWeight: 660, marginTop: 4, color: "black" }}>
-            {matchup.Away_Pitcher} ({matchup.Away_Pitcher_Hand})
-          </div>
-          <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>W-L: </span>
-            <span style={{ fontWeight: 600, color: away_pitcher_record_color }}>
-              {matchup.Away_Pitcher_Wins} - {matchup.Away_Pitcher_Losses}
-            </span>
-          </div>
-          <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>ERA: </span>
-            <span style={{ fontWeight: 600, color: away_era_color }}>
-              {matchup.Away_Pitcher_ERA}
-            </span>
-          </div>
-          <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>ESPN Odds: </span>
-            <span style={{ fontWeight: 600, color: "#000"}}>
-              {matchup.Away_Team_ESPN_Odds}
-            </span> {away_bet_icon_espn}
-          </div>
-          <div>
+            <div style={{ fontSize: "18px", fontWeight: 600, marginTop: 4, color: "#000" }}>
+              Home
+            </div>
+            <div style={{fontWeight: 660, marginTop: 4, color: "black" }}>
+              {matchup.Home_Pitcher} ({matchup.Home_Pitcher_Hand})
+            </div>
+            <div>
+              <span style={{ fontWeight: 600, color: "#000" }}>W-L: </span>
+              <span style={{ fontWeight: 600, color: home_pitcher_record_color }}>{matchup.Home_Pitcher_Wins} - {matchup.Home_Pitcher_Losses}</span>
+            </div>
+            <div>
+              <span style={{ fontWeight: 600, color: "#000" }}>ERA: </span>
+              <span style={{ fontWeight: 600, color: home_era_color }}> {matchup.Home_Pitcher_ERA}</span>
+              </div>
+            <div>
+              <span style={{ fontWeight: 600, color: "#000" }}>ESPN Odds: </span>
+              <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_Current_Odds}</span> {home_bet_icon_espn}
+              </div>
+            <div>
             <span style={{ fontWeight: 600, color: "#000" }}>Model Odds: </span>
-            <span style={{ fontWeight: 600, color: "#000"}}>
-              {matchup.Away_Team_Model_Odds}
-            </span> {away_bet_icon_model}
-          </div>
-          <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
-            <span style={{ fontWeight: 600, color: away_edge_color }}>
-              {matchup.Away_Team_Betting_Edge}
-            </span>
-            </div>
+            <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_Model_Odds}</span> {home_bet_icon_model}
+              </div>
+            <div>
+              <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
+              <span style={{ fontWeight: 600, color: home_edge_color }}>
+              {matchup.Home_Team_Current_Betting_Edge} </span>
+              </div>
           </div>
         </div>
       </div>
