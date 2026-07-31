@@ -42,7 +42,7 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   # mlb_team_record_benchmark
   mlb_team_record_benchmark <- get_data_from_database('mlb_team_record_benchmark')
   # odds table
-  espn_mlb_odds_table_df <- get_espn_mlb_odds(game_date)
+  mlb_games_odds_df <- get_data_from_database('mlb_games_odds_df')
   # probability model
   prob_model <- load_rds("win_prob_model")
   # historical matchup df table
@@ -55,7 +55,7 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   
   #########add odds table ################
   
-  matchup_df <- assign_odds_to_teams(matchup_df, espn_mlb_odds_table_df)
+  matchup_df <- assign_odds_to_teams(matchup_df, mlb_games_odds_df)
   
   ######### add mlb divisions and leagues ###################
   
