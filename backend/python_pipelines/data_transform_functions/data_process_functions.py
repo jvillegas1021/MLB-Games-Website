@@ -856,6 +856,20 @@ def process_mlb_team_record_info(league_id, league_df):
 
     return(mlb_team_records)
 
+def process_mlb_games_odds_df(mlb_games_df, espn_mlb_games_odds_df):
+
+    mlb_games_odds_df = mlb_games_df.merge(
+    espn_mlb_games_odds_df,
+    how='left',
+    left_on=['away_team', 'home_team', 'game_count'],
+    right_on=['away_team_name', 'home_team_name', 'game_count']
+    )
+    
+    mlb_games_odds_df = mlb_games_odds_df[mlb_games_odds_df['game_status_code'] != 'F']
+    mlb_games_odds_df['odds_game_id'] = pd.to_numeric(mlb_games_odds_df['odds_game_id'], errors='coerce')
+    mlb_games_odds_df['update_date'] = datetime.today()
+    
+    return mlb_games_odds_df
 
 
 
