@@ -58,9 +58,7 @@ assign_odds_to_teams <- function(matchup_df, odds_df) {
     
     matchup_df <- matchup_df %>%
     left_join(odds_df,
-              by=c('Home_Team',
-                   'Away_Team',
-                   'Game_Date_Time_Parsed' = 'Game_Timestamp'),
+              by=c('Game_ID' = 'game_id'),
               relationship = 'one-to-one')
     return(matchup_df)
     }
