@@ -2110,7 +2110,16 @@ round_display_columns_for_pitcher_df <- function(pitcher_df) {
 
 #################### FINAL DISPLAY MATCHUP DF (SELECT) ######################
 create_final_display_matchup_df <- function(matchup_df) {
-    
+    matchup_df <- matchup_df %>%
+     rename(
+          Home_Team_Open_Odds = home_open_odds,
+          Home_Team_Current_Odds = home_close_odds,
+          Away_Team_Open_Odds = away_open_odds,
+          Away_Team_Current_Odds = away_close_odds,
+          Moneyline = details,
+          Over_Under = over_under
+          )
+     
     matchup_display_df <- matchup_df %>%
         select(
             Game_ID,
@@ -2122,10 +2131,14 @@ create_final_display_matchup_df <- function(matchup_df) {
             Park_Factor,
             Game_Time,
             Day_Night,
+            Over_Under,
+            Moneyline,
             Home_Team,
-            Home_Team_ESPN_Odds,
+            Home_Team_Open_Odds,
+            Home_Team_Current_Odds,
             Home_Team_Model_Odds,
-            Home_Team_Betting_Edge,
+            Home_Team_Open_Betting_Edge
+            Home_Team_Current_Betting_Edge,
             Home_Pitcher,
             Home_Pitcher_ID,
             Home_Pitcher_Hand,
@@ -2142,9 +2155,11 @@ create_final_display_matchup_df <- function(matchup_df) {
             Home_Team_Record_Score,
             Home_Context_Score,
             Away_Team,
-            Away_Team_ESPN_Odds,
+            Away_Team_Open_Odds,
+            Away_Team_Current_Odds,
             Away_Team_Model_Odds,
-            Away_Team_Betting_Edge,
+            Away_Team_Open_Betting_Edge
+            Away_Team_Current_Betting_Edge,
             Away_Pitcher,
             Away_Pitcher_ID,
             Away_Pitcher_Hand,
