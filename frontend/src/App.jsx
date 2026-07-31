@@ -84,7 +84,7 @@ function App() {
     {tab === "matchups" && (
       <>
         <img 
-        src="/website_images/Diamond's Edge Logo.jpg"
+        src="/website_images/Diamonds_Edge_Logo.jpg"
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
