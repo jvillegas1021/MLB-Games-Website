@@ -330,6 +330,7 @@ def extract_mlb_games_today(game_date=None):
     game_ids = []
     game_date_times = []
     game_dates = []
+    game_status_codes = []
     away_teams = []
     home_teams = []
     game_numbers = []
@@ -340,7 +341,10 @@ def extract_mlb_games_today(game_date=None):
         game_ids.append(matchup.get('gamePk'))
         game_date_times.append(matchup.get('gameDate'))
         game_dates.append(matchup.get('officialDate'))
-    
+
+        game_status = matchup['status']
+        game_status_codes.append(game_status.get('abstractGameCode'))
+        
         away_team = matchup['teams']['away']['team']
     
         away_teams.append(away_team.get('name'))
@@ -355,6 +359,7 @@ def extract_mlb_games_today(game_date=None):
         'game_id': game_ids,
         'game_date_time': game_date_times,
         'game_date': game_dates,
+        'game_status_code': game_status_codes,
         'away_team': away_teams,
         'home_team': home_teams,
         'game_number': game_numbers})
