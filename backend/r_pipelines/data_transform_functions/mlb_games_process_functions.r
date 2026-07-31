@@ -2137,7 +2137,7 @@ create_final_display_matchup_df <- function(matchup_df) {
             Home_Team_Open_Odds,
             Home_Team_Current_Odds,
             Home_Team_Model_Odds,
-            Home_Team_Open_Betting_Edge
+            Home_Team_Open_Betting_Edge,
             Home_Team_Current_Betting_Edge,
             Home_Pitcher,
             Home_Pitcher_ID,
@@ -2158,7 +2158,7 @@ create_final_display_matchup_df <- function(matchup_df) {
             Away_Team_Open_Odds,
             Away_Team_Current_Odds,
             Away_Team_Model_Odds,
-            Away_Team_Open_Betting_Edge
+            Away_Team_Open_Betting_Edge,
             Away_Team_Current_Betting_Edge,
             Away_Pitcher,
             Away_Pitcher_ID,
