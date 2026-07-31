@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-scheduler:
+  run_mlb_games_odds_update:
     runs-on: ubuntu-latest
 
     env:
