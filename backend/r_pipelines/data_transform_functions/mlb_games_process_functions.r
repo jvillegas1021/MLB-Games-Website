@@ -2035,25 +2035,30 @@ calculate_model_odds_and_edge <- function(matchup_df) {
 calculate_betting_logic <- function(matchup_df) {
   betting_df <- matchup_df %>%
     mutate(
-      
-      Home_Team_ESPN_Odds = replace_na(Home_Team_ESPN_Odds, 0),
-      Away_Team_ESPN_Odds = replace_na(Away_Team_ESPN_Odds, 0),
+
       Home_Team_Model_Odds = replace_na(Home_Team_Model_Odds, 0),
       Away_Team_Model_Odds = replace_na(Away_Team_Model_Odds, 0),
-      Home_Team_Betting_Edge = replace_na(Home_Team_Betting_Edge, 0),
-      Away_Team_Betting_Edge = replace_na(Away_Team_Betting_Edge, 0),
+      Home_Team_Open_Betting_Edge = replace_na(Home_Team_Open_Betting_Edge, 0),
+      Home_Team_Current_Betting_Edge = replace_na(Home_Team_Current_Betting_Edge, 0),
+      Away_Team_Open_Betting_Edge = replace_na(Away_Team_Open_Betting_Edge, 0),
+      Away_Team_Current_Betting_Edge = replace_na(Away_Team_Current_Betting_Edge, 0),
+      
+      Home_Team_Open_Betting_Edge = as.numeric(Home_Team_Open_Betting_Edge),
+      Home_Team_Current_Betting_Edge = as.numeric(Home_Team_Current_Betting_Edge),
+      Away_Team_Open_Betting_Edge = as.numeric(Away_Team_Open_Betting_Edge),
+      Away_Team_Current_Betting_Edge = as.numeric(Away_Team_Current_Betting_Edge),
       
       Bet_Team = Predicted_Winner,
       
       Favorite = case_when(
-        Home_Team_ESPN_Odds < Away_Team_ESPN_Odds ~ Home_Team,
-        Home_Team_ESPN_Odds > Away_Team_ESPN_Odds ~ Away_Team,
+        home_close_odds < away_close_odds ~ Home_Team,
+        home_close_odds > away_close_odds ~ Away_Team,
         TRUE ~ NA_character_
       ),
       
       Underdog = case_when(
-        Home_Team_ESPN_Odds > Away_Team_ESPN_Odds ~ Home_Team,
-        Home_Team_ESPN_Odds < Away_Team_ESPN_Odds ~ Away_Team,
+        home_close_odds > away_close_odds ~ Home_Team,
+        home_close_odds < away_close_odds ~ Away_Team,
         TRUE ~ NA_character_
       ),
       
@@ -2065,8 +2070,8 @@ calculate_betting_logic <- function(matchup_df) {
       ),
       
       Betting_Edge = case_when(
-        Predicted_Winner == Home_Team ~ Home_Team_Betting_Edge,
-        Predicted_Winner == Away_Team ~ Away_Team_Betting_Edge,
+        Predicted_Winner == Home_Team ~ Home_Team_Current_Betting_Edge,
+        Predicted_Winner == Away_Team ~ Away_Team_Current_Betting_Edge,
         TRUE ~ NA_real_
       ),
       
