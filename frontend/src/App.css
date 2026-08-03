@@ -239,28 +239,29 @@ body, html, #root {
   }
 }
 
-@media (orientation: portrait) {
-  body, html {
-    font-size: 2.6vw !important;
+@media (orientation: portrait) and (min-width: 400px) {
+  .matchup-card-columns {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important; /* keeps columns aligned at top */
+    gap: 8px !important;
   }
 
   .matchup-card-column {
-    font-size: 2.8vw !important;
+    width: 30% !important;
+    font-size: clamp(12px, 2.4vw, 16px) !important;
   }
 
   .matchup-card-center {
-    font-size: 2.5vw !important;
-    line-height: 1.25 !important;
+    width: 40% !important;
+    order: 2;
+    font-size: clamp(11px, 2.2vw, 15px) !important;
   }
 
-  .matchup-card-column img {
-    width: 50px !important;
-  }
-}
-
-@media (orientation: portrait) {
   .team-title {
-    font-size: 3vw !important;
-    line-height: 1.1 !important;
+    font-size: clamp(14px, 2.8vw, 20px) !important;
   }
 }
+
+
+
