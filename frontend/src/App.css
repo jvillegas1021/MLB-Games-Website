@@ -243,9 +243,42 @@ body, html, #root {
     width: 50px !important;
     height: auto;
   }
+
+  .pitcher-details-card {
+    display: flex !important;
+    width: 100% !important;
+    font-size: clamp(10px, 2vw, 15px) !important;
+    line-height: 1.2 !important;
+  }
+
+  .pitcher-details-column {
+    width: 30% !important;
+    margin-bottom: 20px !important;
+    font-size: clamp(10px, 2vw, 15px) !important;
+    line-height: 1.2 !important;
+  }
+
+  .pitcher-scores {
+  font-size: clamp(12px, 1.8vw, 16px) !important;
+  font-weight: 700 !important;
 }
 
+}
 
+@media (orientation: landscape) {
+  .pitcher-details-card {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: clamp(10px, 2vw, 15px) !important;
+    line-height: 1.2 !important;
+  }
+
+  .pitcher-details-column {
+    width: 33.33% !important;
+    font-size: clamp(10px, 2vw, 15px) !important;
+    line-height: 1.2 !important;
+  }
+}
 
 
 

@@ -142,17 +142,9 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
 
 
   return (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      width: "100%",
-      marginTop: "20px"
-    }}
-    >
+  <div className="pitcher-details-card">
       {/* LEFT COLUMN — Away Pitch Mix */}
-      <div style={{ width: "30%", textAlign: "center" }}>
+      <div className="pitcher-details-column">
         <h3>{matchup.Away_Pitcher} Pitch Usage </h3>
 
         {away_pitcher_usage_list_filtered.map((u, i) => (
@@ -166,27 +158,20 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
           >
             <div style={{ width: "150px" }}>{u.pitch}</div>
 
-            <div 
-              style={{ 
-                height: "12px",
-                width: "200px",
-                backgroundColor: "#eee",
-                marginLeft: "10px",
-                position: "relative"
+            {/* Mini Pie Chart */}
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: `conic-gradient(crimson ${u.value}%, #eee 0)`,
+                marginLeft: "10px"
               }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  width: `${u.value * 2}px`,
-                  backgroundColor: "crimson",
-                  marginLeft: "auto"
-                }}
-              />
-            </div>
+            ></div>
 
             <div style={{ marginLeft: "10px" }}>{u.value}%</div>
           </div>
+
         ))}
         <h3> {matchup.Away_Pitcher} {last_year} - {current_year} Stats</h3>
         <h3> Expected </h3>
@@ -226,8 +211,9 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
       </div>
 
       {/* CENTER COLUMN — whatever you want */}
-      <div style={{ width: "30%", textAlign: "center" }}>
-        <h3>Starting Pitchers Breakdown</h3>
+      <div className="pitcher-details-column">
+
+        <h3>Starting Pitcher Scores</h3>
 
         <div 
           style={{ 
@@ -238,19 +224,27 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
             marginTop: "10px"
           }}
         >
-          <span style={{ color: compare_stat_general_color(matchup.Away_Pitcher_Score, matchup.Home_Pitcher_Score) }}>
+          <span 
+            className="pitcher-scores"
+            style={{ color: compare_stat_general_color(matchup.Away_Pitcher_Score, matchup.Home_Pitcher_Score) }}
+          >
             {matchup.Away_Pitcher_Score}
           </span>
 
-          <span style={{ color: compare_stat_general_color(matchup.Home_Pitcher_Score, matchup.Away_Pitcher_Score) }}>
+          <span 
+            className="pitcher-scores"
+            style={{ color: compare_stat_general_color(matchup.Home_Pitcher_Score, matchup.Away_Pitcher_Score) }}
+          >
             {matchup.Home_Pitcher_Score}
           </span>
+
         </div>
       </div>
 
 
       {/* RIGHT COLUMN — Home Pitch Mix */}
-      <div style={{ width: "30%", textAlign: "center" }}>
+      <div className="pitcher-details-column">
+
         <h3>{matchup.Home_Pitcher} Pitch Usage </h3>
 
         {home_pitcher_usage_list_filtered.map((u, i) => (
@@ -264,26 +258,20 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
           >
             <div style={{ width: "150px" }}>{u.pitch}</div>
 
-            <div 
-              style={{ 
-                height: "12px",
-                width: "200px",
-                backgroundColor: "#eee",
-                marginLeft: "10px",
-                position: "relative"
+            {/* Mini Pie Chart */}
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: `conic-gradient(crimson ${u.value}%, #eee 0)`,
+                marginLeft: "10px"
               }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  width: `${u.value * 2}px`,
-                  backgroundColor: "steelblue"
-                }}
-              />
-            </div>
+            ></div>
 
             <div style={{ marginLeft: "10px" }}>{u.value}%</div>
           </div>
+
         ))}
         <h3> {matchup.Home_Pitcher} {last_year} - {current_year} Stats</h3>
         <h3> Expected </h3>
