@@ -60,6 +60,23 @@ function App() {
     .catch(err => console.log("FETCH ERROR:", err));
   }, []);
 
+  const [mlb_games_prediction_results, setMLBGamesPredictionResults] = useState([])
+
+  useEffect(() => {
+    fetch('https://mlb-games-website.onrender.com/mlb_games_prediction_results', {
+      headers: {'x-api-key': 'mlb_games_api_key'},
+    })
+    .then((res) => {
+      console.log("STATUS:", res.status);
+      return res.json();
+    })
+    .then((data) => {
+      console.log("DATA:", data);
+      setMLBGamesPredictionResults(data.mlb_games_prediction_results);
+    })
+    .catch(err => console.log("FETCH ERROR:", err));
+  }, []);
+
   const [tab, setTab] = useState("matchups");
   const [selectedMatchup, setSelectedMatchup] = useState(null);
 
