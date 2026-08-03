@@ -98,7 +98,12 @@ function App() {
     {/* MATCHUP DETAILS */}
     {tab === "details" && (
       <div>
-        <h1>Matchup Pitcher Details</h1>
+        <img 
+        src="/website_images/Diamonds_Edge_Logo.png"
+        alt="MLB Logo"
+        style={{ width: "200px", marginBottom: "20px" }}
+        />
+        <h1>Pitcher Matchup Details</h1>
 
         {/* Dropdown */}
         <select

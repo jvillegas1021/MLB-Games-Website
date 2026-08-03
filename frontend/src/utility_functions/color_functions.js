@@ -24,9 +24,10 @@ export function edge_color(edge) {
   }
 
 export function probability_color(probability) {
-  if (probability > 0) return "green";
-  if (probability < 0) return "red";
-  return "orange"
+  if (probability < 50.00) return "red";
+  if (probability < 55.00) return "orange";
+  if (probability < 60.00) return "yellowgreen";
+  return "green"
 }
 
 export function compare_stat_low_color(stat, compare_stat) {
