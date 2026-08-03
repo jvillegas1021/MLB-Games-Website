@@ -200,8 +200,14 @@ body, html, #root {
   }
 
   /* Wrapper */
-  .matchup-card-wrapper {
-    padding: 12px !important;
+  .matchup-card-wrapper * {
+    font-size: clamp(10px, 2.4vw, 15px) !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Team Title */
+  .team-title {
+    font-size: clamp(14px, 3vw, 20px) !important;
   }
 
   /* Columns container */
@@ -234,34 +240,12 @@ body, html, #root {
 
   /* Images */
   .matchup-card-column img {
-    width: 55px !important;
+    width: 50px !important;
     height: auto;
   }
 }
 
-@media (orientation: portrait) and (min-width: 400px) {
-  .matchup-card-columns {
-    flex-wrap: nowrap !important;
-    justify-content: space-between !important;
-    align-items: flex-start !important; /* keeps columns aligned at top */
-    gap: 8px !important;
-  }
 
-  .matchup-card-column {
-    width: 30% !important;
-    font-size: clamp(12px, 2.4vw, 16px) !important;
-  }
-
-  .matchup-card-center {
-    width: 40% !important;
-    order: 2;
-    font-size: clamp(11px, 2.2vw, 15px) !important;
-  }
-
-  .team-title {
-    font-size: clamp(14px, 2.8vw, 20px) !important;
-  }
-}
 
 
 
