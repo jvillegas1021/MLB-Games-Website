@@ -1,4 +1,7 @@
-## MLB Matchup Prediction Engine [ The Diamond's Edge ]
+## MLB Matchup Prediction Engine [ The Diamond's Edge ] 
+
+## https://the-diamonds-edge.onrender.com/
+
 A full‑stack baseball analytics platform that generates daily MLB matchup predictions using automated data pipelines, dynamic benchmarks, player‑level analysis, and an explainable scoring engine.
 
 This project is the next evolution of the original R Shiny application, rebuilt as a modern React + FastAPI web application backed by a PostgreSQL analytics database and fully automated ETL pipelines.
