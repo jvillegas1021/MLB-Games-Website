@@ -44,33 +44,39 @@ export default function MatchupCard({ matchup }) {
     const away_money_icon = money_icon(matchup.Away_Team, matchup.Predicted_Winner, matchup.Place_Bet);
 
     return (
-      <div style={{
-        padding: '20px',
-        margin: '0 auto',
-        borderBottom: '1px solid #ccc',
-        width: '90%',
-        minHeight: '300px',
-        boxSizing: 'border-box'
-      }}>
+      <div 
+        className="matchup-card-wrapper"
+        style={{
+          padding: '20px',
+          margin: '0 auto',
+          borderBottom: '1px solid #ccc',
+          width: '90%',
+          minHeight: '300px',
+          boxSizing: 'border-box'
+        }}
+        >
+
         {/* 3-column layout */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%'
-        }}>
+        <div 
+          className="matchup-card-columns"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%'
+          }}
+        >
+
           {/* LEFT: Away team */}
-          <div style={{ width: '30%', textAlign: 'center' }}>
+          <div className="matchup-card-column" style={{ width: '30%', textAlign: 'center' }}>
             <img
               src={`/mlb_logos/${matchup.Away_Team}.png`}
               alt={matchup.Away_Team}
               style={{ width: '80px' }}
             />
-            <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: away_team_color }}>
+            <div className="team-title" style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: away_team_color }}>
               {matchup.Away_Team}
             </div>
-            <div style={{ fontSize: "18px", fontWeight: 600, marginTop: 4, color: "#000" }}>
-                Away
-            </div>
+            <div className="ha-label">🚗</div>
             <div style={{ fontWeight: 660, marginTop: 4, color: "black" }}>
               {matchup.Away_Pitcher} ({matchup.Away_Pitcher_Hand})
             </div>
@@ -107,7 +113,8 @@ export default function MatchupCard({ matchup }) {
           </div>
 
           {/* CENTER: Game info */}
-          <div style={{ width: '40%', fontWeight: 600, color: "#000" }}>
+          <div className="matchup-card-column matchup-card-center" style={{ width: '40%', fontWeight: 600, color: "#000" }}>
+
             <p>Game Date: {matchup.Game_Date}</p>
             <p>Game Time: {matchup.Game_Time}</p>
             <p>Game Status: {matchup.Game_Status}</p>
@@ -152,18 +159,17 @@ export default function MatchupCard({ matchup }) {
           </div>
 
           {/* RIGHT: Home team */}
-        <div style={{ width: '30%', textAlign: 'center' }}>
+        <div className="matchup-card-column" style={{ width: '30%', textAlign: 'center' }}>
+
             <img
               src={`/mlb_logos/${matchup.Home_Team}.png`}
               alt={matchup.Home_Team}
               style={{ width: '80px' }}
             />
-            <div style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: home_team_color }}>
+            <div className="team-title" style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: home_team_color }}>
               {matchup.Home_Team}
             </div>
-            <div style={{ fontSize: "18px", fontWeight: 600, marginTop: 4, color: "#000" }}>
-              Home
-            </div>
+            <div className="ha-label">🏠</div>
             <div style={{fontWeight: 660, marginTop: 4, color: "black" }}>
               {matchup.Home_Pitcher} ({matchup.Home_Pitcher_Hand})
             </div>
