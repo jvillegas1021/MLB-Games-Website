@@ -2381,8 +2381,8 @@ calculate_overall_pick_accuracy <- function(curated_results_df, final_results_df
 ################ calculate betting accuracy picks ##############
 calculate_overall_betting_accuracy <- function(curated_results_df, final_results_df) {
   betting_edge_df <- curated_results_df %>%
-    drop_na(Home_Team_Betting_Edge,
-            Away_Team_Betting_Edge) %>%
+    drop_na(Home_Team_Current_Betting_Edge,
+            Away_Team_Current_Betting_Edge) %>%
     filter(
       Place_Bet == TRUE
     ) %>%
