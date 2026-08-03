@@ -109,7 +109,7 @@ function App() {
 
           {matchups.map((m, i) => (
             <option key={i} value={i}>
-              {m.Home_Team} vs {m.Away_Team}
+              {m.Away_Team} vs {m.Home_Team}
             </option>
           ))}
         </select>
