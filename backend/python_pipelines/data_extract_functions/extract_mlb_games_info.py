@@ -452,14 +452,14 @@ def extract_espn_mlb_games_odds(game_date=None):
         
         else:
             # game started OR ESPN didn’t publish odds yet
-            details.append(None)
-            over_unders.append(None)
-            spreads.append(None)
+            details.append(0)
+            over_unders.append(0)
+            spreads.append(0)
         
-            away_open_odds.append(None)
-            away_close_odds.append(None)
-            home_open_odds.append(None)
-            home_close_odds.append(None)
+            away_open_odds.append(0)
+            away_close_odds.append(0)
+            home_open_odds.append(0)
+            home_close_odds.append(0)
     
     
         
