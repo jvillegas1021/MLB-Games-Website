@@ -1,5 +1,7 @@
-mlb_games_results_pipeline <- function(game_date = as.Date(format(Sys.time(), tz = "America/New_York"))) {
+mlb_games_results_pipeline <- function(game_date = Sys.Date()) {
   ######## Previous day mlb game results ##############
+  game_date <- as.Date(game_date, tz = "America/New_York")
+  
   previous_date <- game_date - 1
   games_table <- get_mlb_games(previous_date)
   
@@ -23,4 +25,5 @@ mlb_games_results_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   write_df_to_sql_append('mlb_games_results', results_final_df)
   
 }
+
 
