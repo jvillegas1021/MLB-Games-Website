@@ -1,6 +1,6 @@
 import { compare_stat_low_color, compare_stat_high_color, compare_stat_general_color } from "../utility_functions/color_functions.js"
 import { safe_fixed, safe_percent } from "../utility_functions/safe_functions.js"
-
+import { mlb_team_colors } from "../mlb_colors.js";
 export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_league_averages }) {
 
   if (!pitcher_league_averages || pitcher_league_averages.length === 0) {
@@ -34,6 +34,9 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
     "Sweeper",
     "Unknown"
   ];
+
+  const home_team_color = mlb_team_colors[matchup.Home_Team];
+  const away_team_color = mlb_team_colors[matchup.Away_Team];
 
   const current_year = new Date().getFullYear();
   const last_year = current_year - 1;
@@ -164,7 +167,7 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: `conic-gradient(crimson ${u.value}%, #eee 0)`,
+                background: `conic-gradient(${away_team_color} ${u.value}%, #eee 0)`,
                 marginLeft: "10px"
               }}
             ></div>
@@ -264,7 +267,7 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                background: `conic-gradient(crimson ${u.value}%, #eee 0)`,
+                background: `conic-gradient(${home_team_color} ${u.value}%, #eee 0)`,
                 marginLeft: "10px"
               }}
             ></div>

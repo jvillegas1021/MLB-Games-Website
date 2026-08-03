@@ -77,7 +77,7 @@ function App() {
     <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
       <button onClick={() => setTab("matchups")}>Matchups</button>
       <button onClick={() => setTab("details")}>Pitcher Details</button>
-      <button onClick={() => setTab("about")}>About Model</button>
+      <button onClick={() => setTab("about")}>Diamond's Edge</button>
     </div>
 
     {/* MATCHUPS TAB */}
@@ -140,7 +140,12 @@ function App() {
     {/* ABOUT TAB */}
     {tab === "about" && (
       <div>
-        <h1>About the Model</h1>
+        <img 
+        src="/website_images/Diamonds_Edge_Logo.png"
+        alt="MLB Logo"
+        style={{ width: "200px", marginBottom: "20px" }}
+        />
+        <h1>Diamond's Edge Results</h1>
         <p>Explain your matchup engine, probabilities, edges, etc.</p>
       </div>
     )}
