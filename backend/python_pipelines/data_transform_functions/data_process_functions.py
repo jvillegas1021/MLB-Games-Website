@@ -856,6 +856,165 @@ def process_mlb_team_record_info(league_id, league_df):
 
     return(mlb_team_records)
 
+def process_espn_mlb_games_odds_df(espn_odds_df):
+      
+    game_ids = []
+    dates = []
+    stadiums = []
+    statuses = []
+    away_teams = []
+    away_team_abvs = []
+    home_teams = []
+    home_team_abvs = []
+    details = []
+    over_unders = []
+    spreads = []
+    away_open_odds = []
+    away_close_odds = []
+    home_open_odds = []
+    home_close_odds = []
+    
+    for game in range(len(espn_odds_df['competitions'])):
+        matchup = espn_odds_df['competitions'][game][0]
+    
+        game_ids.append(matchup.get('id'))
+        dates.append(matchup.get('date'))
+    
+        venue = matchup['venue']
+        stadiums.append(venue.get('fullName'))
+
+        status = matchup['status']['type']
+        statuses.append(status.get('description'))
+    
+        away_team = matchup['competitors'][1]['team']
+        home_team = matchup['competitors'][0]['team']
+                        
+        away_teams.append(away_team.get('displayName'))
+        away_team_abvs.append(away_team.get('abbreviation'))
+        
+        home_teams.append(home_team.get('displayName'))
+        home_team_abvs.append(home_team.get('abbreviation'))
+
+        odds_list = matchup.get('odds', [])
+    
+        if odds_list:
+            odds = odds_list[0]
+        
+            details.append(odds.get('details', 0))
+            over_unders.append(odds.get('overUnder', 0))
+            spreads.append(odds.get('spread', 0))
+        
+            # moneyline may also be missing
+            moneyline = odds.get('moneyline', {})
+        
+            away_ml = moneyline.get('away', {})
+            home_ml = moneyline.get('home', {})
+        
+            away_open_odds.append(away_ml.get('open', {}).get('odds', 0))
+            away_close_odds.append(away_ml.get('close', {}).get('odds', 0))
+        
+            home_open_odds.append(home_ml.get('open', {}).get('odds', 0))
+            home_close_odds.append(home_ml.get('close', {}).get('odds', 0))
+        
+        else:
+            # game started OR ESPN didn’t publish odds yet
+            details.append(0)
+            over_unders.append(0)
+            spreads.append(0)
+        
+            away_open_odds.append(0)
+            away_close_odds.append(0)
+            home_open_odds.append(0)
+            home_close_odds.append(0)
+    
+    
+        
+        
+    odds_final_df = pd.DataFrame({
+        'odds_game_id': game_ids,
+        'date_time': dates,
+        'venue': stadiums,
+        'status': statuses,
+        'away_team_name': away_teams,
+        'away_team_abv': away_team_abvs,
+        'away_open_odds': away_open_odds,
+        'away_close_odds': away_close_odds,
+        'home_team_name': home_teams,
+        'home_team_abv': home_team_abvs,
+        'home_open_odds': home_open_odds,
+        'home_close_odds': home_close_odds,
+        'details': details,
+        'over_under': over_unders,
+        'spread': spreads,
+        }) 
+
+    
+    odds_final_df['abv_key'] = (
+        odds_final_df['away_team_abv'] + " - " + odds_final_df['home_team_abv']
+    )
+    odds_final_df['game_count'] = odds_final_df.groupby('abv_key').cumcount() + 1
+    
+    odds_final_df['away_open_odds'] = pd.to_numeric(odds_final_df['away_open_odds'], errors='coerce')
+    odds_final_df['away_close_odds'] = pd.to_numeric(odds_final_df['away_close_odds'], errors='coerce')
+    odds_final_df['home_open_odds'] = pd.to_numeric(odds_final_df['home_open_odds'], errors='coerce')
+    odds_final_df['home_close_odds'] = pd.to_numeric(odds_final_df['home_close_odds'], errors='coerce')
+
+    odds_final_df = odds_final_df.fillna(0)
+
+
+    return(odds_final_df)
+
+def process_mlb_games_today_df(mlb_games_today_df):
+   
+    game_obj = mlb_games_today_df['dates'][0]['games']
+    
+    game_ids = []
+    game_date_times = []
+    game_dates = []
+    game_status_codes = []
+    away_teams = []
+    home_teams = []
+    game_numbers = []
+    
+    for game in range(0, len(game_obj)):
+        matchup = game_obj[game]
+    
+        game_ids.append(matchup.get('gamePk'))
+        game_date_times.append(matchup.get('gameDate'))
+        game_dates.append(matchup.get('officialDate'))
+
+        game_status = matchup['status']
+        game_status_codes.append(game_status.get('abstractGameCode'))
+        
+        away_team = matchup['teams']['away']['team']
+    
+        away_teams.append(away_team.get('name'))
+    
+        home_team = matchup['teams']['home']['team']
+    
+        home_teams.append(home_team.get('name'))
+    
+        game_numbers.append(matchup.get('gameNumber'))
+    
+    matchups_df = pd.DataFrame({
+        'game_id': game_ids,
+        'game_date_time': game_date_times,
+        'game_date': game_dates,
+        'game_status_code': game_status_codes,
+        'away_team': away_teams,
+        'home_team': home_teams,
+        'game_number': game_numbers})
+
+    matchups_df = matchups_df.sort_values('game_date_time')
+
+    matchups_df['team_name_key'] = (
+            matchups_df['away_team'] + " - " + matchups_df['home_team']
+    )
+    matchups_df['game_count'] = matchups_df.groupby('team_name_key').cumcount() + 1
+    
+    return matchups_df
+
+    
 def process_mlb_games_odds_df(mlb_games_df, espn_mlb_games_odds_df):
 
     mlb_games_odds_df = mlb_games_df.merge(
