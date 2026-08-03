@@ -444,11 +444,11 @@ def extract_espn_mlb_games_odds(game_date=None):
             away_ml = moneyline.get('away', {})
             home_ml = moneyline.get('home', {})
         
-            away_open_odds.append(away_ml.get('open', {}).get('odds'))
-            away_close_odds.append(away_ml.get('close', {}).get('odds'))
+            away_open_odds.append(away_ml.get('open', {}).get('odds', 0))
+            away_close_odds.append(away_ml.get('close', {}).get('odds', 0))
         
-            home_open_odds.append(home_ml.get('open', {}).get('odds'))
-            home_close_odds.append(home_ml.get('close', {}).get('odds'))
+            home_open_odds.append(home_ml.get('open', {}).get('odds', 0))
+            home_close_odds.append(home_ml.get('close', {}).get('odds', 0))
         
         else:
             # game started OR ESPN didn’t publish odds yet
@@ -493,5 +493,6 @@ def extract_espn_mlb_games_odds(game_date=None):
     odds_final_df['home_open_odds'] = pd.to_numeric(odds_final_df['home_open_odds'], errors='coerce')
     odds_final_df['home_close_odds'] = pd.to_numeric(odds_final_df['home_close_odds'], errors='coerce')
 
-
+    odds_final_df = odds_final_df.fillna(0)
+    
     return(odds_final_df)
