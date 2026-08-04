@@ -114,10 +114,9 @@ export default function MatchupCard({ matchup }) {
 
           {/* CENTER: Game info */}
           <div className="matchup-card-column matchup-card-center" style={{ width: '40%', fontWeight: 600, color: "#000" }}>
-
+            <p>Game ID: {matchup.Game_ID}</p>
             <p>Game Date: {matchup.Game_Date}</p>
             <p>Game Time: {matchup.Game_Time}</p>
-            <p>Game Status: {matchup.Game_Status}</p>
             <p>Ball Park: {matchup.Game_Venue}</p>
             <p> Day / Night: {matchup.Day_Night === "day" ? "☀️" : "🌑"}</p>
             <p> Over / Under: {matchup.Over_Under}</p>
