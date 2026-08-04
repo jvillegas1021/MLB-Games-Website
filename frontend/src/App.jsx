@@ -4,6 +4,7 @@ import heroImg from './assets/hero.png';
 import { useEffect, useState } from 'react';
 import MatchupCard from "./components/MatchupCard.jsx";
 import MatchupPitcherDetails from "./components/MatchupPitcherDetails.jsx"
+import DiamondsEdgeResults from './components/DiamondsEdgeResults.jsx';
 
 import './App.css';
 
@@ -63,7 +64,7 @@ function App() {
   const [mlb_games_prediction_results, setMLBGamesPredictionResults] = useState([])
 
   useEffect(() => {
-    fetch('https://mlb-games-website.onrender.com/mlb_games_prediction_results', {
+    fetch('https://mlb-games-website.onrender.com/diamonds_edge_results', {
       headers: {'x-api-key': 'mlb_games_api_key'},
     })
     .then((res) => {
@@ -162,8 +163,9 @@ function App() {
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
-        <h1>Diamond's Edge Results</h1>
-        <p>Explain your matchup engine, probabilities, edges, etc.</p>
+        <DiamondsEdgeResults
+        mlb_games_prediction_results={mlb_games_prediction_results}
+        />
       </div>
     )}
 
