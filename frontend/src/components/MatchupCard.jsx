@@ -77,35 +77,35 @@ export default function MatchupCard({ matchup }) {
               {matchup.Away_Team}
             </div>
             <div className="ha-label">🚗</div>
-            <div style={{ fontWeight: 660, marginTop: 4, color: "black" }}>
+            <div style={{ fontWeight: 660, marginTop: 4}}>
               {matchup.Away_Pitcher} ({matchup.Away_Pitcher_Hand})
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>W-L: </span>
+              <span style={{ fontWeight: 600}}>W-L: </span>
               <span style={{ fontWeight: 600, color: away_pitcher_record_color }}>
                 {matchup.Away_Pitcher_Wins} - {matchup.Away_Pitcher_Losses}
               </span>
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>ERA: </span>
+              <span style={{ fontWeight: 600}}>ERA: </span>
               <span style={{ fontWeight: 600, color: away_era_color }}>
                 {matchup.Away_Pitcher_ERA}
               </span>
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>ESPN Odds: </span>
-              <span style={{ fontWeight: 600, color: "#000"}}>
+              <span style={{ fontWeight: 600}}>ESPN Odds: </span>
+              <span style={{ fontWeight: 600}}>
                 {matchup.Away_Team_Current_Odds}
               </span> {away_bet_icon_espn}
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>Model Odds: </span>
-              <span style={{ fontWeight: 600, color: "#000"}}>
+              <span style={{ fontWeight: 600}}>Model Odds: </span>
+              <span style={{ fontWeight: 600}}>
                 {matchup.Away_Team_Model_Odds}
               </span> {away_bet_icon_model}
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
+              <span style={{ fontWeight: 600}}>Edge: </span>
               <span style={{ fontWeight: 600, color: away_edge_color }}>
                 {matchup.Away_Team_Current_Betting_Edge}
               </span>   {away_money_icon}
@@ -113,7 +113,7 @@ export default function MatchupCard({ matchup }) {
           </div>
 
           {/* CENTER: Game info */}
-          <div className="matchup-card-column matchup-card-center" style={{ width: '40%', fontWeight: 600, color: "#000" }}>
+          <div className="matchup-card-column matchup-card-center" style={{ width: '40%', fontWeight: 600}}>
             <p>Game ID: {matchup.Game_ID}</p>
             <p>Game Date: {matchup.Game_Date}</p>
             <p>Game Time: {matchup.Game_Time}</p>
@@ -124,7 +124,7 @@ export default function MatchupCard({ matchup }) {
 
 
             <p>
-              <span style={{ fontWeight: 600, color: "#000" }}>Predicted Winner: </span>
+              <span style={{ fontWeight: 600}}>Predicted Winner: </span>
               <span style={{fontWeight: 700, color: predicted_winner_color}}>{matchup.Predicted_Winner}</span>
               <img
                 src={`/mlb_logos/${matchup.Predicted_Winner}.png`}
@@ -135,7 +135,7 @@ export default function MatchupCard({ matchup }) {
             </p>
 
             <p>
-              <span style={{ fontWeight: 600, color: '#000' }}>Win Probability: </span>{" "}
+              <span style={{ fontWeight: 600}}>Win Probability: </span>{" "}
               <span style={{ fontWeight: 600, color: win_probability_color }}>
                 {matchup.Win_Probability} %
               </span>
@@ -169,27 +169,27 @@ export default function MatchupCard({ matchup }) {
               {matchup.Home_Team}
             </div>
             <div className="ha-label">🏠</div>
-            <div style={{fontWeight: 660, marginTop: 4, color: "black" }}>
+            <div style={{fontWeight: 660, marginTop: 4}}>
               {matchup.Home_Pitcher} ({matchup.Home_Pitcher_Hand})
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>W-L: </span>
+              <span style={{ fontWeight: 600}}>W-L: </span>
               <span style={{ fontWeight: 600, color: home_pitcher_record_color }}>{matchup.Home_Pitcher_Wins} - {matchup.Home_Pitcher_Losses}</span>
             </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>ERA: </span>
+              <span style={{ fontWeight: 600}}>ERA: </span>
               <span style={{ fontWeight: 600, color: home_era_color }}> {matchup.Home_Pitcher_ERA}</span>
               </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>ESPN Odds: </span>
-              <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_Current_Odds}</span> {home_bet_icon_espn}
+              <span style={{ fontWeight: 600}}>ESPN Odds: </span>
+              <span style={{ fontWeight: 600}}>{matchup.Home_Team_Current_Odds}</span> {home_bet_icon_espn}
               </div>
             <div>
-            <span style={{ fontWeight: 600, color: "#000" }}>Model Odds: </span>
-            <span style={{ fontWeight: 600, color: "#000"}}>{matchup.Home_Team_Model_Odds}</span> {home_bet_icon_model}
+            <span style={{ fontWeight: 600}}>Model Odds: </span>
+            <span style={{ fontWeight: 600}}>{matchup.Home_Team_Model_Odds}</span> {home_bet_icon_model}
               </div>
             <div>
-              <span style={{ fontWeight: 600, color: "#000" }}>Edge: </span>
+              <span style={{ fontWeight: 600}}>Edge: </span>
               <span style={{ fontWeight: 600, color: home_edge_color }}>
               {matchup.Home_Team_Current_Betting_Edge} </span>   {home_money_icon}
               </div>
