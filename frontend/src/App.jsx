@@ -102,7 +102,7 @@ function App() {
     {tab === "matchups" && (
       <>
         <img 
-        src="/website_images/Diamonds_Edge_Logo.png"
+        src="/website_images/Diamonds_Edge_Logo_Transparent.png"
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
@@ -117,7 +117,7 @@ function App() {
     {tab === "details" && (
       <div>
         <img 
-        src="/website_images/Diamonds_Edge_Logo.png"
+        src="/website_images/Diamonds_Edge_Logo_Transparent.png"
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
@@ -159,7 +159,7 @@ function App() {
     {tab === "about" && (
       <div>
         <img 
-        src="/website_images/Diamonds_Edge_Logo.png"
+        src="/website_images/Diamonds_Edge_Logo_Transparent.png"
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
