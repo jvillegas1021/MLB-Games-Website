@@ -959,6 +959,7 @@ def process_espn_mlb_games_odds_df(espn_odds_df):
     odds_final_df['home_open_odds'] = pd.to_numeric(odds_final_df['home_open_odds'], errors='coerce')
     odds_final_df['home_close_odds'] = pd.to_numeric(odds_final_df['home_close_odds'], errors='coerce')
 
+    odds_final_df['odds_game_id'] = odds_final_df['odds_game_id'].astype(str)
     odds_final_df = odds_final_df.fillna(0)
 
 
@@ -1011,7 +1012,7 @@ def process_mlb_games_today_df(mlb_games_today_df):
             matchups_df['away_team'] + " - " + matchups_df['home_team']
     )
     matchups_df['game_count'] = matchups_df.groupby('team_name_key').cumcount() + 1
-    
+    matchups_df['game_id'] = matchups_df['game_id'].astype(str)
     return matchups_df
 
     
@@ -1025,7 +1026,6 @@ def process_mlb_games_odds_df(mlb_games_df, espn_mlb_games_odds_df):
     )
     
     mlb_games_odds_df = mlb_games_odds_df[mlb_games_odds_df['game_status_code'] == 'P']
-    mlb_games_odds_df['odds_game_id'] = pd.to_numeric(mlb_games_odds_df['odds_game_id'], errors='coerce')
     mlb_games_odds_df['update_date'] = datetime.today()
     
     return mlb_games_odds_df
