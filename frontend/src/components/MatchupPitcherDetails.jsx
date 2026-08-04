@@ -231,14 +231,14 @@ export default function MatchupPitcherDetails({ matchup, pitcher_stats, pitcher_
             className="pitcher-scores"
             style={{ color: compare_stat_general_color(matchup.Away_Pitcher_Score, matchup.Home_Pitcher_Score) }}
           >
-            {matchup.Away_Pitcher_Score}
+            {matchup.Away_Pitcher_Score.toFixed(2)}
           </span>
 
           <span 
             className="pitcher-scores"
             style={{ color: compare_stat_general_color(matchup.Home_Pitcher_Score, matchup.Away_Pitcher_Score) }}
           >
-            {matchup.Home_Pitcher_Score}
+            {matchup.Home_Pitcher_Score.toFixed(2)}
           </span>
 
         </div>
