@@ -5,7 +5,8 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  LabelList
 } from "recharts";
 export default function DiamondsEdgeResults({ mlb_games_prediction_results }) {
 
@@ -89,19 +90,27 @@ export default function DiamondsEdgeResults({ mlb_games_prediction_results }) {
 
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={winProbData}>
-                        <XAxis dataKey="range" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar
+                            <XAxis dataKey="range" />
+                            <YAxis />
+                            <Tooltip />
+
+                            <Bar
                             dataKey="accuracy"
                             fill="#16a34a"
-                        />
+                            >
+                            <LabelList
+                                dataKey="accuracy"
+                                position="inside"
+                                fill="black"
+                                formatter={(value) => Math.round(value) }
+                            />
+                            </Bar>
                         </BarChart>
-                    </ResponsiveContainer>
-                    </div>
-                    ``
+                        </ResponsiveContainer>
+                        ``
             </div>
 
         </div>
+    </div>
     );
 }
