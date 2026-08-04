@@ -524,7 +524,7 @@ def process_team_pitching_df(
         'xBABIP': [team_xbabip]
     })
 
-
+    team_df['gamePk'] = team_df['gamePk'].astype(str)
     team_df['pitcher_player_ids'] = [team_pitchers_player_ids]
     team_df['update date'] = datetime.now(pytz.timezone("America/New_York"))
 
@@ -780,7 +780,7 @@ def process_team_batting_df(game_id: int,
 
     team_df = pd.concat([team_df, batting_df, pitch_type_df, split_df], axis = 1)
 
-
+    team_df['gamePk'] = team_df['gamePk'].astype(str)
     team_df['hitter_player_ids'] = [team_batters_player_ids]
     team_df['update date'] = datetime.now(pytz.timezone("America/New_York"))
 
