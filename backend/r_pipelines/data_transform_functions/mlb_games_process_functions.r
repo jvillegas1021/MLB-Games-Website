@@ -38,8 +38,8 @@ create_matchup_df <- function(games_table) {
         Away_Pitcher_ID = teams.away.probablePitcher.id
       ) %>%
        dplyr::mutate(
-         Game_ID = as.integer(Game_ID)
-       )
+         Game_ID = as.character(Game_ID)
+      )
     
     time <- matchup_df$Game_Time
     dt_utc <- ymd_hms(time, tz = 'UTC')
@@ -2306,7 +2306,7 @@ create_results_df <- function(games_table_df) {
       Away_Team_Is_Winner = teams.away.isWinner
     ) %>%
     mutate(
-      Game_ID = as.integer(Game_ID),
+      Game_ID = as.character(Game_ID),
       update_date = Sys.time()
     )
   
