@@ -295,5 +295,9 @@ body, html, #root {
   }
 }
 
-
-
+@media (prefers-color-scheme: dark) {
+    .team-title {
+        -webkit-text-stroke: 0.25px white;
+        text-shadow: 0 0 1.5px white;
+    }
+}

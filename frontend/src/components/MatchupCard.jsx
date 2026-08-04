@@ -125,7 +125,8 @@ export default function MatchupCard({ matchup }) {
 
             <p>
               <span style={{ fontWeight: 600}}>Predicted Winner: </span>
-              <span style={{fontWeight: 700, color: predicted_winner_color}}>{matchup.Predicted_Winner}</span>
+              <span className="team-title"
+              style={{fontWeight: 600, color: predicted_winner_color}}>{matchup.Predicted_Winner}</span>
               <img
                 src={`/mlb_logos/${matchup.Predicted_Winner}.png`}
                 onError={(e) => { e.target.src = "/mlb_logos/MLB-Logo.png"; }}
