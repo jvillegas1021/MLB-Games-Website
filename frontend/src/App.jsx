@@ -3,7 +3,7 @@ import viteLogo from './assets/vite.svg';
 import heroImg from './assets/hero.png';
 import { useEffect, useState } from 'react';
 import MatchupCard from "./components/MatchupCard.jsx";
-import MatchupPitcherDetails from "./components/MatchupPitcherDetails.jsx"
+import MatchupScoringBreakdown from "./components/MatchupScoringBreakdown.jsx"
 import DiamondsEdgeResults from './components/DiamondsEdgeResults.jsx';
 
 import './App.css';
@@ -94,7 +94,7 @@ function App() {
     {/* TAB BUTTONS */}
     <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
       <button onClick={() => setTab("matchups")}>Matchups</button>
-      <button onClick={() => setTab("details")}>Pitcher Details</button>
+      <button onClick={() => setTab("details")}>Scoring Breakdown</button>
       <button onClick={() => setTab("about")}>Diamond's Edge</button>
     </div>
 
@@ -121,7 +121,7 @@ function App() {
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
-        <h1>Pitcher Matchup Details</h1>
+        <h1>Scoring Breakdown</h1>
 
         {/* Dropdown */}
         <select
@@ -143,10 +143,9 @@ function App() {
             <MatchupCard matchup={selectedMatchup} />
 
             {/* Extra info section */}
-            <MatchupPitcherDetails 
+            <MatchupScoringBreakdown 
             matchup={selectedMatchup}
-            pitcher_stats={pitcher_stats}
-            pitcher_league_averages={pitcher_league_averages} />
+            />
           </>
         )}
 
