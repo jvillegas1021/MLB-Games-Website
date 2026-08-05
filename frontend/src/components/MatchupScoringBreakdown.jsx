@@ -22,6 +22,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Team_Total_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='🥇'
         />
 
         {/* 2 — Pitcher Score */}
@@ -31,6 +32,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Pitcher_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='⚾'
         />
 
         {/* 3 — Lineup Score */}
@@ -40,6 +42,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Batting_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='🔥'
         />
 
         {/* 4 — Bullpen Score */}
@@ -49,6 +52,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Pitching_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='🎯'
         />
 
         {/* 5 — Batting Split Score */}
@@ -58,6 +62,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Team_Split_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='⚖️'
         />
 
         {/* 6 — Pitcher vs Lineup Score */}
@@ -67,6 +72,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Pitcher_vs_Away_Batting_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='⚔️'
         />
 
         {/* 7 — Power Score */}
@@ -76,6 +82,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Power_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='💥'
         />
 
         {/* 8 — Team Record Score */}
@@ -85,6 +92,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Team_Record_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
+            dividerIcon='📈'
         />
         </div>
   </div>

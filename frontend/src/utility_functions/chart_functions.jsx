@@ -36,7 +36,7 @@ export function MirrorBar({ awayValue, homeValue, awayColor, homeColor, category
 }
 
 
-export function ScoreBar({ homeValue, awayValue, homeColor, awayColor }) {
+export function ScoreBar({ homeValue, awayValue, homeColor, awayColor, dividerIcon }) {
 
   const total = homeValue + awayValue;
 
@@ -73,15 +73,18 @@ export function ScoreBar({ homeValue, awayValue, homeColor, awayColor }) {
         backgroundColor: homeColor
       }} />
 
-      {/* Divider */}
+      {/* Divider Icon */}
       <div style={{
         position: "absolute",
         left: `${fillX * 100}%`,
-        top: 0,
-        bottom: 0,
-        width: "2px",
-        backgroundColor: "white"
-      }} />
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        fontSize: "18px",
+        pointerEvents: "none"
+      }}>
+        {dividerIcon}
+      </div>
+
     </div>
   );
 }
