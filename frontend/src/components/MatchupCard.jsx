@@ -143,13 +143,14 @@ export default function MatchupCard({ matchup }) {
             </p>
 
             <WinProbBar
-            probability={matchup.Win_Probability}
-            homeColor={mlb_team_colors[matchup.Home_Team]}
-            awayColor={mlb_team_colors[matchup.Away_Team]}
-            winner={matchup.Predicted_Winner}
-            homeTeam={matchup.Home_Team}
-            awayTeam={matchup.Away_Team}
-          />
+              probability={matchup.Win_Probability}
+              homeColor={mlb_team_colors[matchup.Home_Team]}
+              awayColor={mlb_team_colors[matchup.Away_Team]}
+              winner={matchup.Predicted_Winner}
+              homeTeam={matchup.Home_Team}
+              awayTeam={matchup.Away_Team}
+              dividerIcon='💎'
+            />
 
             <p style={{ fontWeight: 'bold', color: prediction_color }}>
               {matchup.Prediction_Status}
