@@ -42,7 +42,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeValue={matchup.Home_Batting_Score}
             awayColor={away_team_color}
             homeColor={home_team_color}
-            dividerIcon='🔥'
+            dividerIcon='🏏'
         />
 
         {/* 4 — Bullpen Score */}
