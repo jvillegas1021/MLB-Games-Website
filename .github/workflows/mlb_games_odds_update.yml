@@ -2,6 +2,7 @@ name: Run MLB Games Odds Update
 
 on:
   schedule:
+    - cron: "0 10 * * *"   # 6 AM ET
     - cron: "0 14 * * *"   # 10 AM ET
     - cron: "0 15 * * *"   # 11 AM ET
     - cron: "0 16 * * *"   # 12 PM ET

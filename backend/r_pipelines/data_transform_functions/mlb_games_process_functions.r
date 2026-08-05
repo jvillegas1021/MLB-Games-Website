@@ -1978,24 +1978,17 @@ calculate_model_odds_and_edge <- function(matchup_df) {
       p_fair = winner_win_prob / 100,
       q_fair = loser_win_prob  / 100,
     
-      # add 4% vig (total prob = 1.04)
-      vig_factor = 1.04,
-      p_vig = p_fair * vig_factor,
-      q_vig = q_fair * vig_factor,
-    
-      # numeric odds with vig
       winner_odds_int = if_else(
-        p_vig > 0.5,
-        -(p_vig / (1 - p_vig)) * 100,          # favorite
-        ((1 - p_vig) / p_vig) * 100            # underdog (rare for "winner")
+        p_fair > 0.5,
+        -(p_fair / (1 - p_fair)) * 100,          # favorite
+        ((1 - p_fair) / p_fair) * 100            # underdog (rare for "winner")
       ),
       loser_odds_int = if_else(
-        q_vig > 0.5,
-        -(q_vig / (1 - q_vig)) * 100,          # favorite (rare for "loser")
-        ((1 - q_vig) / q_vig) * 100            # underdog
+        q_fair > 0.5,
+        -(q_fair / (1 - q_fair)) * 100,          # favorite (rare for "loser")
+        ((1 - q_fair) / q_fair) * 100            # underdog
       ),
 
-      
       # assign numeric odds to teams
       Home_Odds_Num = if_else(
         Predicted_Winner == Home_Team,
