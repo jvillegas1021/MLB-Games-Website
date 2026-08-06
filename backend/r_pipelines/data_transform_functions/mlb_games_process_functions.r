@@ -2185,7 +2185,7 @@ create_final_display_matchup_df <- function(matchup_df) {
             Place_Bet
         ) %>%
       mutate(update_date = Sys.time()) %>%
-      arrange(Game_Time, ascending=TRUE)
+      arrange(Game_Date_Time_Parsed, ascending=TRUE)
     return(matchup_display_df)
     }
 
