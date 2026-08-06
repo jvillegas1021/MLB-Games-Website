@@ -2184,8 +2184,7 @@ create_final_display_matchup_df <- function(matchup_df) {
             Betting_Edge,
             Place_Bet
         ) %>%
-      mutate(update_date = Sys.time()) %>%
-      arrange(Game_Date_Time_Parsed, ascending=TRUE)
+      mutate(update_date = Sys.time())
     return(matchup_display_df)
     }
 
@@ -2218,7 +2217,7 @@ create_active_matchup_df <- function(matchup_df, historical_matchup_df) {
   
   
   current_matchup_final_df <- rbind(historical_matchup_filtered_df, current_matchup_filtered_df) %>%
-    arrange(Game_Time, ascending=TRUE)
+    arrange(Game_Date_Time_Parsed, ascending=TRUE)
   
   return(current_matchup_final_df)
   
