@@ -76,6 +76,9 @@ export default function MatchupCard({ matchup }) {
             <div className="team-title" style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: away_team_color }}>
               {matchup.Away_Team}
             </div>
+            <div style={{ fontWeight: 600}}>
+              ({matchup.Away_Team_Wins} - {matchup.Away_Team_Losses})
+            </div>
             <div className="ha-label">🚗</div>
             <div style={{ fontWeight: 660, marginTop: 4}}>
               {matchup.Away_Pitcher} ({matchup.Away_Pitcher_Hand})
@@ -169,6 +172,9 @@ export default function MatchupCard({ matchup }) {
             />
             <div className="team-title" style={{ fontSize: "28px", fontWeight: 700, marginTop: 4, color: home_team_color }}>
               {matchup.Home_Team}
+            </div>
+            <div style={{ fontWeight: 600}}>
+              ({matchup.Home_Team_Wins} - {matchup.Home_Team_Losses})
             </div>
             <div className="ha-label">🏠</div>
             <div style={{fontWeight: 660, marginTop: 4}}>
