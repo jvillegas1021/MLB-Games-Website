@@ -46,6 +46,8 @@ export default function MatchupCard({ matchup }) {
 
     const home_money_icon = money_icon(matchup.Home_Team, matchup.Predicted_Winner, matchup.Place_Bet);
     const away_money_icon = money_icon(matchup.Away_Team, matchup.Predicted_Winner, matchup.Place_Bet);
+    const home_money_icon_open = money_icon(matchup.Home_Team, matchup.Predicted_Winner, matchup.Place_Bet_Open);
+    const away_money_icon_open = money_icon(matchup.Away_Team, matchup.Predicted_Winner, matchup.Place_Bet_Open);
     
 
     return (
@@ -113,10 +115,10 @@ export default function MatchupCard({ matchup }) {
               </span> {away_bet_icon_open}
             </div>
             <div>
-              <span style={{ fontWeight: 600}}>Openening Edge: </span>
+              <span style={{ fontWeight: 600}}>Open Edge: </span>
               <span style={{ fontWeight: 600, color: away_edge_color_open }}>
                 {matchup.Away_Team_Open_Betting_Edge}
-              </span>   {away_money_icon}
+              </span>   {away_money_icon_open}
             </div>
             <div>
               <span style={{ fontWeight: 600}}>Current Odds: </span>
@@ -221,7 +223,7 @@ export default function MatchupCard({ matchup }) {
               <span style={{ fontWeight: 600}}>Open Edge: </span>
               <span style={{ fontWeight: 600, color: home_edge_color_open }}>
                 {matchup.Home_Team_Open_Betting_Edge}
-              </span>   {home_money_icon}
+              </span>   {home_money_icon_open}
             </div>
             <div>
               <span style={{ fontWeight: 600}}>Current Odds: </span>
