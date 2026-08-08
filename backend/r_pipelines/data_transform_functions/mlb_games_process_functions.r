@@ -2063,9 +2063,28 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_character_
       ),
       
+      Favorite_Open = case_when(
+        home_open_odds < away_open_odds ~ Home_Team,
+        home_open_odds > away_open_odds ~ Away_Team,
+        TRUE ~ NA_character_
+      ),
+      
+      Underdog_Open = case_when(
+        home_open_odds > away_open_odds ~ Home_Team,
+        home_open_odds < away_open_odds ~ Away_Team,
+        TRUE ~ NA_character_
+      ),
+      
       Bet_Team_Favorite_Underdog = case_when(
         Bet_Team == Favorite ~ "Favorite",
         Bet_Team == Underdog ~ "Underdog",
+        Bet_Team == "No Prediction" ~ "No Prediction",
+        TRUE ~ NA_character_
+      ),
+      
+      Bet_Team_Favorite_Underdog_Open = case_when(
+        Bet_Team == Favorite_Open ~ "Favorite",
+        Bet_Team == Underdog_Open ~ "Underdog",
         Bet_Team == "No Prediction" ~ "No Prediction",
         TRUE ~ NA_character_
       ),
@@ -2076,7 +2095,14 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_real_
       ),
       
-      Place_Bet = !is.na(Betting_Edge) & (!(Game_Status_Code == 'F')) & Betting_Edge > 0
+      Betting_Edge_Open = case_when(
+        Predicted_Winner == Home_Team ~ Home_Team_Open_Betting_Edge,
+        Predicted_Winner == Away_Team ~ Away_Team_Open_Betting_Edge,
+        TRUE ~ NA_real_
+      ),
+      
+      Place_Bet = !is.na(Betting_Edge) & (!(Game_Status_Code == 'F')) & Betting_Edge > 0,
+      Place_Bet_Open = !is.na(Betting_Edge_Open) & (!(Game_Status_Code == 'F')) & Betting_Edge_Open > 0
       )
   return(betting_df)
 }
@@ -2191,10 +2217,15 @@ create_final_display_matchup_df <- function(matchup_df) {
             Prediction_Status,
             Bet_Team,
             Favorite,
+            Favorite_Open,
             Underdog,
+            Underdog_Open,
             Bet_Team_Favorite_Underdog,
+            Bet_Team_Favorite_Underdog_Open,
             Betting_Edge,
-            Place_Bet
+            Betting_Edge_Open,
+            Place_Bet,
+            Place_Bet_Open
         ) %>%
       mutate(update_date = Sys.time())
     return(matchup_display_df)
