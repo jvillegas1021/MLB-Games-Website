@@ -22,8 +22,10 @@ export default function MatchupCard({ matchup }) {
 
     const prediction_color = prediction_status_color(matchup.Prediction_Status);
 
-    const home_edge_color = edge_color(matchup.Home_Team_Current_Betting_Edge);
-    const away_edge_color = edge_color(matchup.Away_Team_Current_Betting_Edge);
+    const home_edge_color_current = edge_color(matchup.Home_Team_Current_Betting_Edge);
+    const away_edge_color_current = edge_color(matchup.Away_Team_Current_Betting_Edge);
+    const home_edge_color_open = edge_color(matchup.Home_Team_Open_Betting_Edge);
+    const away_edge_color_open = edge_color(matchup.Away_Team_Open_Betting_Edge);
 
     const home_era_color = era_color(matchup.Home_Pitcher_ERA);
     const away_era_color = era_color(matchup.Away_Pitcher_ERA);
@@ -34,14 +36,17 @@ export default function MatchupCard({ matchup }) {
     const win_probability_color = probability_color(matchup.Win_Probability);
     const predicted_winner_color = mlb_team_colors[matchup.Predicted_Winner];
 
-    const home_bet_icon_espn = bet_icon(matchup.Home_Team_Current_Odds, matchup.Away_Team_Current_Odds);
-    const away_bet_icon_espn = bet_icon(matchup.Away_Team_Current_Odds, matchup.Home_Team_Current_Odds);
+    const home_bet_icon_current = bet_icon(matchup.Home_Team_Current_Odds, matchup.Away_Team_Current_Odds);
+    const away_bet_icon_current = bet_icon(matchup.Away_Team_Current_Odds, matchup.Home_Team_Current_Odds);
+    const home_bet_icon_open = bet_icon(matchup.Home_Team_Open_Odds, matchup.Away_Team_Open_Odds);
+    const away_bet_icon_open = bet_icon(matchup.Away_Team_Open_Odds, matchup.Home_Team_Open_Odds);
     
     const home_bet_icon_model = bet_icon(matchup.Home_Team_Model_Odds, matchup.Away_Team_Model_Odds);
     const away_bet_icon_model = bet_icon(matchup.Away_Team_Model_Odds, matchup.Home_Team_Model_Odds);
 
     const home_money_icon = money_icon(matchup.Home_Team, matchup.Predicted_Winner, matchup.Place_Bet);
     const away_money_icon = money_icon(matchup.Away_Team, matchup.Predicted_Winner, matchup.Place_Bet);
+    
 
     return (
       <div 
@@ -96,20 +101,32 @@ export default function MatchupCard({ matchup }) {
               </span>
             </div>
             <div>
-              <span style={{ fontWeight: 600}}>ESPN Odds: </span>
-              <span style={{ fontWeight: 600}}>
-                {matchup.Away_Team_Current_Odds}
-              </span> {away_bet_icon_espn}
-            </div>
-            <div>
               <span style={{ fontWeight: 600}}>Model Odds: </span>
               <span style={{ fontWeight: 600}}>
                 {matchup.Away_Team_Model_Odds}
               </span> {away_bet_icon_model}
             </div>
             <div>
-              <span style={{ fontWeight: 600}}>Edge: </span>
-              <span style={{ fontWeight: 600, color: away_edge_color }}>
+              <span style={{ fontWeight: 600}}>Open Odds: </span>
+              <span style={{ fontWeight: 600}}>
+                {matchup.Away_Team_Open_Odds}
+              </span> {away_bet_icon_open}
+            </div>
+            <div>
+              <span style={{ fontWeight: 600}}>Openening Edge: </span>
+              <span style={{ fontWeight: 600, color: away_edge_color_open }}>
+                {matchup.Away_Team_Open_Betting_Edge}
+              </span>   {away_money_icon}
+            </div>
+            <div>
+              <span style={{ fontWeight: 600}}>Current Odds: </span>
+              <span style={{ fontWeight: 600}}>
+                {matchup.Away_Team_Current_Odds}
+              </span> {away_bet_icon_current}
+            </div>
+            <div>
+              <span style={{ fontWeight: 600}}>Current Edge: </span>
+              <span style={{ fontWeight: 600, color: away_edge_color_current }}>
                 {matchup.Away_Team_Current_Betting_Edge}
               </span>   {away_money_icon}
             </div>
@@ -187,20 +204,37 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600}}>ERA: </span>
               <span style={{ fontWeight: 600, color: home_era_color }}> {matchup.Home_Pitcher_ERA}</span>
-              </div>
+            </div>
             <div>
-              <span style={{ fontWeight: 600}}>ESPN Odds: </span>
-              <span style={{ fontWeight: 600}}>{matchup.Home_Team_Current_Odds}</span> {home_bet_icon_espn}
-              </div>
+              <span style={{ fontWeight: 600}}>Model Odds: </span>
+              <span style={{ fontWeight: 600}}>
+                {matchup.Home_Team_Model_Odds}
+              </span> {home_bet_icon_model}
+            </div>
             <div>
-            <span style={{ fontWeight: 600}}>Model Odds: </span>
-            <span style={{ fontWeight: 600}}>{matchup.Home_Team_Model_Odds}</span> {home_bet_icon_model}
-              </div>
+              <span style={{ fontWeight: 600}}>Open Odds: </span>
+              <span style={{ fontWeight: 600}}>
+                {matchup.Home_Team_Open_Odds}
+              </span> {home_bet_icon_open}
+            </div>
             <div>
-              <span style={{ fontWeight: 600}}>Edge: </span>
-              <span style={{ fontWeight: 600, color: home_edge_color }}>
-              {matchup.Home_Team_Current_Betting_Edge} </span>   {home_money_icon}
-              </div>
+              <span style={{ fontWeight: 600}}>Open Edge: </span>
+              <span style={{ fontWeight: 600, color: home_edge_color_open }}>
+                {matchup.Home_Team_Open_Betting_Edge}
+              </span>   {home_money_icon}
+            </div>
+            <div>
+              <span style={{ fontWeight: 600}}>Current Odds: </span>
+              <span style={{ fontWeight: 600}}>
+                {matchup.Home_Team_Current_Odds}
+              </span> {home_bet_icon_current}
+            </div>
+            <div>
+              <span style={{ fontWeight: 600}}>Current Edge: </span>
+              <span style={{ fontWeight: 600, color: home_edge_color_current }}>
+                {matchup.Home_Team_Current_Betting_Edge}
+              </span>   {home_money_icon}
+            </div>
           </div>
         </div>
       </div>
