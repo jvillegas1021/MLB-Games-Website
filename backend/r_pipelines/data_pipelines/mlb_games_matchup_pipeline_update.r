@@ -50,7 +50,7 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   
   #########add odds table ################
   
-  matchup_df <- assign_odds_to_teams(matchup_df, mlb_games_odds_df)
+  matchup_df <- assign_odds_and_win_probability_to_teams(matchup_df, mlb_games_odds_df)
   
   ######### add mlb divisions and leagues ###################
   
