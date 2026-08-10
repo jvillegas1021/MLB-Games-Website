@@ -2054,10 +2054,10 @@ calculate_model_odds_and_edge <- function(matchup_df) {
       
       
       # compute edge using numeric odds
-      Home_Team_Open_Edge = Home_Team_Model_Win_Probability - Home_Open_Win_Probability,
-      Home_Team_Current_Edge = Home_Team_Model_Win_Probability - Home_Current_Win_Probability,
-      Away_Team_Open_Edge = Away_Team_Model_Win_Probability - Away_Open_Win_Probability,
-      Away_Team_Current_Edge = Away_Team_Model_Win_Probability - Away_Current_Win_Probability,
+      Home_Team_Open_Edge = round(Home_Team_Model_Win_Probability - Home_Open_Win_Probability, 2),
+      Home_Team_Current_Edge = round(Home_Team_Model_Win_Probability - Home_Current_Win_Probability, 2),
+      Away_Team_Open_Edge = round(Away_Team_Model_Win_Probability - Away_Open_Win_Probability, 2),
+      Away_Team_Current_Edge = round(Away_Team_Model_Win_Probability - Away_Current_Win_Probability, 2)
 
     )
   
