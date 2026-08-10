@@ -22,10 +22,10 @@ export default function MatchupCard({ matchup }) {
 
     const prediction_color = prediction_status_color(matchup.Prediction_Status);
 
-    const home_edge_color_current = edge_color(matchup.Home_Team_Current_Betting_Edge);
-    const away_edge_color_current = edge_color(matchup.Away_Team_Current_Betting_Edge);
-    const home_edge_color_open = edge_color(matchup.Home_Team_Open_Betting_Edge);
-    const away_edge_color_open = edge_color(matchup.Away_Team_Open_Betting_Edge);
+    const home_edge_color_current = edge_color(matchup.Home_Team_Current_Edge);
+    const away_edge_color_current = edge_color(matchup.Away_Team_Current_Edge);
+    const home_edge_color_open = edge_color(matchup.Home_Team_Open_Edge);
+    const away_edge_color_open = edge_color(matchup.Away_Team_Open_Edge);
 
     const home_era_color = era_color(matchup.Home_Pitcher_ERA);
     const away_era_color = era_color(matchup.Away_Pitcher_ERA);
@@ -117,7 +117,7 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600}}>Open Edge: </span>
               <span style={{ fontWeight: 600, color: away_edge_color_open }}>
-                {matchup.Away_Team_Open_Betting_Edge}
+                {matchup.Away_Team_Open_Edge}
               </span>   {away_money_icon_open}
             </div>
             <div>
@@ -129,7 +129,7 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600}}>Current Edge: </span>
               <span style={{ fontWeight: 600, color: away_edge_color_current }}>
-                {matchup.Away_Team_Current_Betting_Edge}
+                {matchup.Away_Team_Current_Edge}
               </span>   {away_money_icon}
             </div>
           </div>
@@ -222,7 +222,7 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600}}>Open Edge: </span>
               <span style={{ fontWeight: 600, color: home_edge_color_open }}>
-                {matchup.Home_Team_Open_Betting_Edge}
+                {matchup.Home_Team_Open_Edge}
               </span>   {home_money_icon_open}
             </div>
             <div>
@@ -234,7 +234,7 @@ export default function MatchupCard({ matchup }) {
             <div>
               <span style={{ fontWeight: 600}}>Current Edge: </span>
               <span style={{ fontWeight: 600, color: home_edge_color_current }}>
-                {matchup.Home_Team_Current_Betting_Edge}
+                {matchup.Home_Team_Current_Edge}
               </span>   {home_money_icon}
             </div>
           </div>
