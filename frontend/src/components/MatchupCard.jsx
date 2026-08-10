@@ -143,6 +143,7 @@ export default function MatchupCard({ matchup }) {
             <p> Day / Night: {matchup.Day_Night === "day" ? "☀️" : "🌑"}</p>
             <p> Over / Under: {matchup.Over_Under}</p>
             <p> Moneyline: {matchup.Moneyline}</p>
+            <p> Best Bet: {matchup.Bet_Team_Current}</p>
 
 
             <p>
