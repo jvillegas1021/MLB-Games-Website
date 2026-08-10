@@ -62,12 +62,34 @@ create_matchup_df <- function(games_table) {
     }
 ######################### ASSIGN ODDS TABLE ##############################
 
-assign_odds_to_teams <- function(matchup_df, odds_df) {
+assign_odds_and_win_probability_to_teams <- function(matchup_df, odds_df) {
     
     matchup_df <- matchup_df %>%
-    left_join(odds_df,
+      left_join(odds_df,
               by=c('Game_ID' = 'game_id'),
-              relationship = 'one-to-one')
+              relationship = 'one-to-one') %>%
+      mutate(
+        Home_Open_Win_Probability = if_else(
+          home_open_odds < 0,
+          round((abs(home_open_odds) / (abs(home_open_odds) + 100)) * 100, 2),
+          round((100 / (home_open_odds + 100)) * 100, 2)
+        ),
+        Home_Current_Win_Probability = if_else(
+          home_close_odds < 0,
+          round((abs(home_close_odds) / (abs(home_close_odds) + 100)) * 100, 2),
+          round((100 / (home_close_odds + 100)) * 100, 2)
+        ),
+        Away_Open_Win_Probability = if_else(
+          away_open_odds < 0,
+          round((abs(away_open_odds) / (abs(away_open_odds) + 100)) * 100, 2),
+          round((100 / (away_open_odds + 100)) * 100, 2)
+        ),
+        Away_Current_Win_Probability = if_else(
+          away_close_odds < 0,
+          round((abs(away_close_odds) / (abs(away_close_odds) + 100)) * 100, 2),
+          round((100 / (away_close_odds + 100)) * 100, 2)
+        )
+    )
     return(matchup_df)
     }
 
@@ -1979,8 +2001,17 @@ calculate_model_odds_and_edge <- function(matchup_df) {
   
   matchup_df <- matchup_df %>%
     mutate(
+      
       winner_win_prob = Win_Probability,
       loser_win_prob  = 100 - winner_win_prob,
+      
+      Home_Team_Model_Win_Probability = if_else(
+        Predicted_Winner == Home_Team, winner_win_prob, loser_win_prob
+      ),
+      Away_Team_Model_Win_Probability = if_else(
+        Predicted_Winner == Away_Team, winner_win_prob, loser_win_prob
+      ),
+
     
       # fair probabilities (0–1)
       p_fair = winner_win_prob / 100,
@@ -2023,10 +2054,10 @@ calculate_model_odds_and_edge <- function(matchup_df) {
       
       
       # compute edge using numeric odds
-      Home_Team_Open_Betting_Edge = home_open_odds - round(Home_Odds_Num),
-      Home_Team_Current_Betting_Edge = home_close_odds - round(Home_Odds_Num),
-      Away_Team_Open_Betting_Edge = away_open_odds - round(Away_Odds_Num),
-      Away_Team_Current_Betting_Edge = away_close_odds - round(Away_Odds_Num),
+      Home_Team_Open_Edge = Home_Team_Model_Win_Probability - Home_Open_Win_Probability,
+      Home_Team_Current_Edge = Home_Team_Model_Win_Probability - Home_Current_Win_Probability,
+      Away_Team_Open_Edge = Away_Team_Model_Win_Probability - Away_Open_Win_Probability,
+      Away_Team_Current_Edge = Away_Team_Model_Win_Probability - Away_Current_Win_Probability,
 
     )
   
@@ -2037,27 +2068,19 @@ calculate_betting_logic <- function(matchup_df) {
   betting_df <- matchup_df %>%
     mutate(
 
-      Home_Team_Model_Odds = replace_na(Home_Team_Model_Odds, 0),
-      Away_Team_Model_Odds = replace_na(Away_Team_Model_Odds, 0),
-      Home_Team_Open_Betting_Edge = replace_na(Home_Team_Open_Betting_Edge, 0),
-      Home_Team_Current_Betting_Edge = replace_na(Home_Team_Current_Betting_Edge, 0),
-      Away_Team_Open_Betting_Edge = replace_na(Away_Team_Open_Betting_Edge, 0),
-      Away_Team_Current_Betting_Edge = replace_na(Away_Team_Current_Betting_Edge, 0),
+      Home_Team_Open_Edge = as.numeric(replace_na(Home_Team_Open_Edge, 0)),
+      Home_Team_Current_Edge = as.numeric(replace_na(Home_Team_Current_Edge, 0)),
+      Away_Team_Open_Edge = as.numeric(replace_na(Away_Team_Open_Edge, 0)),
+      Away_Team_Current_Edge = as.numeric(replace_na(Away_Team_Current_Edge, 0)),
       
-      Home_Team_Open_Betting_Edge = as.numeric(Home_Team_Open_Betting_Edge),
-      Home_Team_Current_Betting_Edge = as.numeric(Home_Team_Current_Betting_Edge),
-      Away_Team_Open_Betting_Edge = as.numeric(Away_Team_Open_Betting_Edge),
-      Away_Team_Current_Betting_Edge = as.numeric(Away_Team_Current_Betting_Edge),
       
-      Bet_Team = Predicted_Winner,
-      
-      Favorite = case_when(
+      Favorite_Current = case_when(
         home_close_odds < away_close_odds ~ Home_Team,
         home_close_odds > away_close_odds ~ Away_Team,
         TRUE ~ NA_character_
       ),
       
-      Underdog = case_when(
+      Underdog_Current = case_when(
         home_close_odds > away_close_odds ~ Home_Team,
         home_close_odds < away_close_odds ~ Away_Team,
         TRUE ~ NA_character_
@@ -2075,35 +2098,71 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_character_
       ),
       
-      Bet_Team_Favorite_Underdog = case_when(
-        Bet_Team == Favorite ~ "Favorite",
-        Bet_Team == Underdog ~ "Underdog",
-        Bet_Team == "No Prediction" ~ "No Prediction",
-        TRUE ~ NA_character_
+      Place_Bet_Home_Open = (
+        !is.na(Home_Team_Open_Edge) &
+          Game_Status_Code != 'F' &
+          Home_Team_Open_Edge >= 5 &
+          Home_Team_Model_Win_Probability >= 0.60
+      ),
+
+      
+      Place_Bet_Home_Current = (
+        !is.na(Home_Team_Current_Edge) &
+          Game_Status_Code != 'F' &
+          Home_Team_Current_Edge >= 5 &
+          Home_Team_Model_Win_Probability >= 0.60
+      ),
+      
+      Place_Bet_Away_Open = (
+        !is.na(Away_Team_Open_Edge) &
+          Game_Status_Code != 'F' &
+          Away_Team_Open_Edge >= 10 &
+          Away_Team_Model_Win_Probability >= 0.45
+      ),
+      
+      Place_Bet_Away_Current = (
+        !is.na(Away_Team_Current_Edge) &
+          Game_Status_Code != 'F' &
+          Away_Team_Current_Edge >= 10 &
+          Away_Team_Model_Win_Probability >= 0.45
+      ),
+      
+      Bet_Team_Open = case_when(
+        Place_Bet_Home_Open &
+        Home_Team_Open_Edge > Away_Team_Open_Edge ~ Home_Team,
+        
+        Place_Bet_Away_Open &
+          Away_Team_Open_Edge > Home_Team_Open_Edge ~ Away_Team,
+        
+        TRUE ~ "No Bet"
+      ),
+      
+      Bet_Team_Current = case_when(
+        Place_Bet_Home_Current &
+        Home_Team_Current_Edge > Away_Team_Current_Edge ~ Home_Team,
+        
+        Place_Bet_Away_Current &
+        Away_Team_Current_Edge > Home_Team_Current_Edge ~ Away_Team,
+        
+        TRUE ~ "No Bet"
       ),
       
       Bet_Team_Favorite_Underdog_Open = case_when(
-        Bet_Team == Favorite_Open ~ "Favorite",
-        Bet_Team == Underdog_Open ~ "Underdog",
-        Bet_Team == "No Prediction" ~ "No Prediction",
+        Bet_Team_Open == Favorite_Open ~ "Favorite",
+        Bet_Team_Open == Underdog_Open ~ "Underdog",
+        Bet_Team_Open == "No Bet" ~ "No Bet",
         TRUE ~ NA_character_
       ),
       
-      Betting_Edge = case_when(
-        Predicted_Winner == Home_Team ~ Home_Team_Current_Betting_Edge,
-        Predicted_Winner == Away_Team ~ Away_Team_Current_Betting_Edge,
-        TRUE ~ NA_real_
-      ),
-      
-      Betting_Edge_Open = case_when(
-        Predicted_Winner == Home_Team ~ Home_Team_Open_Betting_Edge,
-        Predicted_Winner == Away_Team ~ Away_Team_Open_Betting_Edge,
-        TRUE ~ NA_real_
-      ),
-      
-      Place_Bet = !is.na(Betting_Edge) & (!(Game_Status_Code == 'F')) & Betting_Edge > 0,
-      Place_Bet_Open = !is.na(Betting_Edge_Open) & (!(Game_Status_Code == 'F')) & Betting_Edge_Open > 0
+      Bet_Team_Favorite_Underdog_Current = case_when(
+        Bet_Team_Current == Favorite_Current ~ "Favorite",
+        Bet_Team_Current == Underdog_Current ~ "Underdog",
+        Bet_Team_Current == "No Bet" ~ "No Bet",
+        TRUE ~ NA_character_
       )
+      
+    )
+      
   return(betting_df)
 }
 ################## ROUND DISPLAY COLUMNS FOR MATCHUP #######################
@@ -2166,8 +2225,8 @@ create_final_display_matchup_df <- function(matchup_df) {
             Home_Team_Open_Odds,
             Home_Team_Current_Odds,
             Home_Team_Model_Odds,
-            Home_Team_Open_Betting_Edge,
-            Home_Team_Current_Betting_Edge,
+            Home_Team_Open_Edge,
+            Home_Team_Current_Edge,
             Home_Pitcher,
             Home_Pitcher_ID,
             Home_Pitcher_Hand,
@@ -2189,8 +2248,8 @@ create_final_display_matchup_df <- function(matchup_df) {
             Away_Team_Open_Odds,
             Away_Team_Current_Odds,
             Away_Team_Model_Odds,
-            Away_Team_Open_Betting_Edge,
-            Away_Team_Current_Betting_Edge,
+            Away_Team_Open_Edge,
+            Away_Team_Current_Edge,
             Away_Pitcher,
             Away_Pitcher_ID,
             Away_Pitcher_Hand,
@@ -2215,17 +2274,18 @@ create_final_display_matchup_df <- function(matchup_df) {
             Home_Lineup_Hydrated,
             Away_Lineup_Hydrated,
             Prediction_Status,
-            Bet_Team,
-            Favorite,
+            Favorite_Current,
             Favorite_Open,
-            Underdog,
+            Underdog_Current,
             Underdog_Open,
-            Bet_Team_Favorite_Underdog,
-            Bet_Team_Favorite_Underdog_Open,
-            Betting_Edge,
-            Betting_Edge_Open,
-            Place_Bet,
-            Place_Bet_Open
+            Place_Bet_Home_Open,
+            Place_Bet_Home_Current,
+            Place_Bet_Away_Open,
+            Place_Bet_Away_Current,
+            Bet_Team_Open,
+            Bet_Team_Current,
+            Bet_Team_Favorite_Underdog_Open, 
+            Bet_Team_Favorite_Underdog_Current
         ) %>%
       mutate(update_date = Sys.time())
     return(matchup_display_df)
