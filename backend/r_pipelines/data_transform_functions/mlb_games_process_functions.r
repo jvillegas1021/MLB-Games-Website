@@ -2002,7 +2002,7 @@ calculate_model_odds_and_edge <- function(matchup_df) {
   matchup_df <- matchup_df %>%
     mutate(
       
-      winner_win_prob = round(Win_Probability, 2)
+      winner_win_prob = round(Win_Probability, 2),
       loser_win_prob  = round(100 - winner_win_prob, 2),
       
       Home_Team_Model_Win_Probability = if_else(
