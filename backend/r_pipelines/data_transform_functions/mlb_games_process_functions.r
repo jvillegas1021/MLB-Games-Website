@@ -2102,7 +2102,7 @@ calculate_betting_logic <- function(matchup_df) {
         !is.na(Home_Team_Open_Edge) &
           Game_Status_Code != 'F' &
           Home_Team_Open_Edge >= 5 &
-          Home_Team_Model_Win_Probability >= 0.60
+          Home_Team_Model_Win_Probability >= 60.0
       ),
 
       
@@ -2110,21 +2110,21 @@ calculate_betting_logic <- function(matchup_df) {
         !is.na(Home_Team_Current_Edge) &
           Game_Status_Code != 'F' &
           Home_Team_Current_Edge >= 5 &
-          Home_Team_Model_Win_Probability >= 0.60
+          Home_Team_Model_Win_Probability >= 60.0
       ),
       
       Place_Bet_Away_Open = (
         !is.na(Away_Team_Open_Edge) &
           Game_Status_Code != 'F' &
           Away_Team_Open_Edge >= 10 &
-          Away_Team_Model_Win_Probability >= 0.45
+          Away_Team_Model_Win_Probability >= 45.0
       ),
       
       Place_Bet_Away_Current = (
         !is.na(Away_Team_Current_Edge) &
           Game_Status_Code != 'F' &
           Away_Team_Current_Edge >= 10 &
-          Away_Team_Model_Win_Probability >= 0.45
+          Away_Team_Model_Win_Probability >= 45.0
       ),
       
       Bet_Team_Open = case_when(
