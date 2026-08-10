@@ -35,6 +35,7 @@ export default function MatchupCard({ matchup }) {
 
     const win_probability_color = probability_color(matchup.Win_Probability);
     const predicted_winner_color = mlb_team_colors[matchup.Predicted_Winner];
+    const best_bet_color = mlb_team_colors[matchup.Bet_Team_Current];
 
     const home_bet_icon_current = bet_icon(matchup.Home_Team_Current_Odds, matchup.Away_Team_Current_Odds);
     const away_bet_icon_current = bet_icon(matchup.Away_Team_Current_Odds, matchup.Home_Team_Current_Odds);
@@ -143,9 +144,17 @@ export default function MatchupCard({ matchup }) {
             <p> Day / Night: {matchup.Day_Night === "day" ? "☀️" : "🌑"}</p>
             <p> Over / Under: {matchup.Over_Under}</p>
             <p> Moneyline: {matchup.Moneyline}</p>
-            <p> Best Bet: {matchup.Bet_Team_Current}</p>
-
-
+            <p> 
+              <span style={{ fontWeight: 600}}>Best Bet: </span>
+              <span className="team-title"
+              style={{fontWeight: 600, color: best_bet_color}}>{matchup.Bet_Team_Current}</span>
+              <img
+                src={`/mlb_logos/${matchup.Bet_Team_Current}.png`}
+                onError={(e) => { e.target.src = "/mlb_logos/MLB-Logo.png"; }}
+                alt={matchup.Bet_Team_Current}
+                style={{ width: '60px', marginLeft: '8px' }}
+              />
+            </p>
             <p>
               <span style={{ fontWeight: 600}}>Predicted Winner: </span>
               <span className="team-title"
