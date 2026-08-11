@@ -2,8 +2,9 @@ name: Run MLB Benchmarks Update (R)
 
 on:
   schedule:
-    - cron: "0 08 * * *"   # 2 AM ET
+    - cron: "0 6 * * *"   # 2 AM ET every day
   workflow_dispatch:
+
 
 jobs:
   run-r--mlb-benchmarks-update:
