@@ -2483,11 +2483,11 @@ calculate_overall_pick_accuracy <- function(curated_results_df, final_results_df
 calculate_overall_betting_accuracy <- function(curated_results_df, final_results_df) {
   betting_edge_df <- curated_results_df %>%
     filter(
-      Bet_Team_Current != 'No Bet'
+      Place_Bet_Home_Current | Place_Bet_Away_Current
     ) %>%
     mutate(
       Correct_Bet = if_else(
-        (Correct_Prediction == TRUE) & (Bet_Team_Current == Winner), TRUE, FALSE
+        Bet_Team_Current == Winner, TRUE, FALSE
       )
     )
   
