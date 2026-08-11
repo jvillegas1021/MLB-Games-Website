@@ -2482,14 +2482,12 @@ calculate_overall_pick_accuracy <- function(curated_results_df, final_results_df
 ################ calculate betting accuracy picks ##############
 calculate_overall_betting_accuracy <- function(curated_results_df, final_results_df) {
   betting_edge_df <- curated_results_df %>%
-    drop_na(Home_Team_Current_Betting_Edge,
-            Away_Team_Current_Betting_Edge) %>%
     filter(
-      Place_Bet == TRUE
+      Bet_Team_Current != 'No Bet'
     ) %>%
     mutate(
       Correct_Bet = if_else(
-        (Correct_Prediction == TRUE) & (Place_Bet == TRUE), TRUE, FALSE
+        (Correct_Prediction == TRUE) & (Bet_Team_Current == Winner), TRUE, FALSE
       )
     )
   
@@ -2509,8 +2507,8 @@ calculate_overall_betting_accuracy <- function(curated_results_df, final_results
 ################## calculate underdog accuracy picks ###############
 calculate_underdog_accuracy <- function(curated_results_df, final_results_df) {
   underdog_df <- curated_results_df %>%
-    drop_na(Bet_Team_Favorite_Underdog) %>%
-    filter(Bet_Team_Favorite_Underdog == 'Underdog')
+    drop_na(Bet_Team_Favorite_Underdog_Current) %>%
+    filter(Bet_Team_Favorite_Underdog_Current == 'Underdog')
   
   total_underdog_picks <- nrow(underdog_df)
   total_correct_underdog_picks <- sum(underdog_df$Correct_Prediction)
