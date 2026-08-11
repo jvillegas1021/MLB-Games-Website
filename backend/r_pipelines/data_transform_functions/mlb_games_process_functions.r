@@ -1962,7 +1962,7 @@ calculate_win_prob_prediction <- function(matchup_df,
     
   matchup_df <- matchup_df %>%
   mutate(
-      Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2)
+      Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2),
       Win_Probability = if_else(Score_Difference < 0,
                                 100 - Win_Probability,
                                 Win_Probability)
