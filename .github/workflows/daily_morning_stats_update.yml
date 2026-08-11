@@ -2,7 +2,7 @@ name: Run Daily Morning Update Scheduler
 
 on:
   schedule:
-    - cron: "12 11 * * *"   # 8:00 AM ET (1 hour before 9:00)
+    - cron: "0 6 * * *"   # 2 AM ET every day
   workflow_dispatch:
 
 jobs:
