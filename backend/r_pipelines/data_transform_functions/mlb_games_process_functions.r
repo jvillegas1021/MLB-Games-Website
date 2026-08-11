@@ -1949,7 +1949,7 @@ calculate_total_scores <- function(matchup_df) {
         Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
         TRUE ~ "Tie"
       ),
-      Score_Difference = round(abs(Home_Team_Total_Score - Away_Team_Total_Score), 4) * 0.25
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
     )
          
   return(matchup_df)
@@ -1963,6 +1963,9 @@ calculate_win_prob_prediction <- function(matchup_df,
   matchup_df <- matchup_df %>%
   mutate(
       Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2)
+      Win_Probability = if_else(Score_Difference < 0,
+                                100 - Win_Probability,
+                                Win_Probability)
       )
   
   matchup_df <- matchup_df %>%
