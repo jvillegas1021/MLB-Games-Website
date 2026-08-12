@@ -86,7 +86,7 @@ export default function DiamondsEdgeResults({ mlb_games_prediction_results }) {
                 </div>
 
                 <div style={{ marginTop: "40px" }}>
-                    <h2>Accuracy By Win Probability</h2>
+                    <h2>Accuracy By Prediction Confidence</h2>
 
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={winProbData}>
