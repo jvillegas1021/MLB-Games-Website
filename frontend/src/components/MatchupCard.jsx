@@ -168,7 +168,7 @@ export default function MatchupCard({ matchup }) {
             </p>
 
             <p>
-              <span style={{ fontWeight: 600}}>Win Probability: </span>{" "}
+              <span style={{ fontWeight: 600}}>Prediction Confidence : </span>{" "}
               <span style={{ fontWeight: 600, color: win_probability_color }}>
                 {matchup.Win_Probability} %
               </span>
