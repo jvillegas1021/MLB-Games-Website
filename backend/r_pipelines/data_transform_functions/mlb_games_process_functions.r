@@ -1915,21 +1915,21 @@ calculate_total_scores <- function(matchup_df) {
   matchup_df <- matchup_df %>%
     mutate(
       Home_Pitcher_Score = Home_Pitcher_Score * 1.2,
-      Home_Batting_Score = Home_Batting_Score * 0.8,
-      Home_Pitching_Score = Home_Pitching_Score * 0.1,
+      Home_Batting_Score = Home_Batting_Score * 0.5,
+      Home_Pitching_Score = Home_Pitching_Score * 0.3,
       Home_Context_Score = Home_Context_Score * 0.3,
-      Home_Team_Record_Score = Home_Team_Record_Score * 0.5,
+      Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
       Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
       Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
-      Home_Power_Score = Home_Power_Score * 3.0,
+      Home_Power_Score = Home_Power_Score * 1.0,
       Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
-      Away_Batting_Score = Away_Batting_Score * 0.8,
-      Away_Pitching_Score = Away_Pitching_Score * 0.1,
+      Away_Batting_Score = Away_Batting_Score * 0.5,
+      Away_Pitching_Score = Away_Pitching_Score * 0.3,
       Away_Context_Score = Away_Context_Score * 0.3,
-      Away_Team_Record_Score = Away_Team_Record_Score * 0.5,
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.3,
       Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
       Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
-      Away_Power_Score = Away_Power_Score * 3.0
+      Away_Power_Score = Away_Power_Score * 1.0
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
