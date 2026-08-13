@@ -131,13 +131,6 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
                                            team_batting_df,
                                            mlb_team_league_batting_splits_df)
   
-  ############################## calculate power boost score / suppression #################
-  
-  matchup_df <- calculate_power_boost_score(matchup_df,
-                                            starting_pitcher_filtered_df,
-                                            team_batting_df,
-                                            mlb_team_league_batting_averages_df)
-  
   
   ###############################################calculate total score##########################################
   
