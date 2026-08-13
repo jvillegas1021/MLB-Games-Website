@@ -1921,15 +1921,13 @@ calculate_total_scores <- function(matchup_df) {
       Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
       Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
       Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
-      Home_Power_Score = Home_Power_Score * 1.0,
       Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
       Away_Batting_Score = Away_Batting_Score * 0.5,
       Away_Pitching_Score = Away_Pitching_Score * 0.3,
       Away_Context_Score = Away_Context_Score * 0.3,
       Away_Team_Record_Score = Away_Team_Record_Score * 0.3,
       Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
-      Away_Power_Score = Away_Power_Score * 1.0
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.5
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
@@ -2165,10 +2163,10 @@ calculate_betting_logic <- function(matchup_df) {
 round_display_columns_for_matchup_df <- function(matchup_df) {
     cols_to_round <- c('Home_Pitcher_ERA', 'Home_Team_Total_Score', 'Home_Pitcher_Score', 'Home_Batting_Score',
     'Home_Pitching_Score', 'Home_Team_Split_Score', 'Home_Pitcher_vs_Away_Batting_Score',
-    'Home_Power_Score', 'Home_Team_Record_Score', 'Home_Context_Score',
+    'Home_Team_Record_Score', 'Home_Context_Score',
     'Away_Pitcher_ERA', 'Away_Team_Total_Score', 'Away_Pitcher_Score', 'Away_Batting_Score',
     'Away_Pitching_Score', 'Away_Team_Split_Score', 'Away_Pitcher_vs_Home_Batting_Score',
-    'Away_Power_Score', 'Away_Team_Record_Score', 'Away_Context_Score')
+    'Away_Team_Record_Score', 'Away_Context_Score')
 
     # round display columns
     matchup_df <- matchup_df %>%
@@ -2238,7 +2236,6 @@ create_final_display_matchup_df <- function(matchup_df) {
             Home_Pitching_Score,
             Home_Team_Split_Score,
             Home_Pitcher_vs_Away_Batting_Score,
-            Home_Power_Score,
             Home_Team_Record_Score,
             Home_Context_Score,
             Away_Team,
@@ -2264,7 +2261,6 @@ create_final_display_matchup_df <- function(matchup_df) {
             Away_Pitching_Score,
             Away_Team_Split_Score,
             Away_Pitcher_vs_Home_Batting_Score,
-            Away_Power_Score,
             Away_Team_Record_Score,
             Away_Context_Score,
             Home_Team_Total_Score,
@@ -2300,9 +2296,10 @@ create_historical_matchup_df <- function(matchup_df, historical_matchup_df) {
   historical_game_id_list <- historical_matchup_df$Game_ID
   
   
-  historical_matchup_final_df<- matchup_df %>%
+  historical_matchup_final_df <- matchup_df %>%
     filter((!(Game_ID %in% historical_game_id_list)) &
              Prediction_Status == 'Full Prediction')
+  
   return(historical_matchup_final_df)
   
 }
