@@ -1914,20 +1914,31 @@ calculate_total_scores <- function(matchup_df) {
   
   matchup_df <- matchup_df %>%
     mutate(
-      Home_Pitcher_Score = Home_Pitcher_Score * 1.2,
-      Home_Batting_Score = Home_Batting_Score * 0.5,
-      Home_Pitching_Score = Home_Pitching_Score * 0.3,
-      Home_Context_Score = Home_Context_Score * 0.3,
+      # HIGH importance (Gini > 7)
+      Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
+      Home_Batting_Score = Home_Batting_Score * 1.0,
+      
+      Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
+      Away_Batting_Score = Away_Batting_Score * 1.0,
+      
+      # MEDIUM importance (Gini 6–6.5)
+      Home_Pitching_Score = Home_Pitching_Score * 0.6,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.6,
+      
+      Away_Pitching_Score = Away_Pitching_Score * 0.6,,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.6,
+      
+      # LOW importance (Gini < 5)
       Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
-      Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
-      Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
-      Away_Batting_Score = Away_Batting_Score * 0.5,
-      Away_Pitching_Score = Away_Pitching_Score * 0.3,
-      Away_Context_Score = Away_Context_Score * 0.3,
+      
       Away_Team_Record_Score = Away_Team_Record_Score * 0.3,
+      
+      # REALLY LOW importance (Gini < 1)
+      Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
+      Home_Context_Score = Home_Context_Score * 0.1,
+      
       Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.5
+      Away_Context_Score = Away_Context_Score * 0.1,
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
@@ -2551,11 +2562,68 @@ calculate_win_probability_accuracy <- function(curated_results_df, final_results
   
   
   
+##################### CALCULATE TOTAL SCORES ###################
+calculate_total_scores_testing <- function(matchup_df) {
+  
+  matchup_df <- matchup_df %>%
+    mutate(
+      # HIGH importance (Gini > 7)
+      Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
+      Home_Batting_Score = Home_Batting_Score * 1.0,
+      Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
+      Away_Batting_Score = Away_Batting_Score * 1.0,
+      
+      # MEDIUM importance (Gini 6–6.5)
+      Home_Pitching_Score = Home_Pitching_Score * 0.6,
+      Away_Pitching_Score = Away_Pitching_Score * 0.6,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.6,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.6,
+      
+      # LOW importance (Gini < 5)
+      Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.3
+    )
   
   
+  home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
+  away_scoring_columns <- str_subset(names(matchup_df), '^Away_.*_Score$')
+  
+  matchup_df <- matchup_df %>%
+    mutate(
+      Home_Team_Total_Score = rowSums(across(all_of(home_scoring_columns)), na.rm = TRUE),
+      Away_Team_Total_Score = rowSums(across(all_of(away_scoring_columns)), na.rm = TRUE),
+      Predicted_Winner = case_when(
+        Home_Team_Total_Score > Away_Team_Total_Score ~ Home_Team,
+        Home_Team_Total_Score < Away_Team_Total_Score ~ Away_Team,
+        TRUE ~ "Tie"
+      ),
+      Predicted_Loser = case_when(
+        Home_Team_Total_Score > Away_Team_Total_Score ~ Away_Team,
+        Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
+        TRUE ~ "Tie"
+      ),
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
+    )
+  
+  return(matchup_df)
+  
+}
   
   
+##################### CALCULATE WIN PROB AND PREDICTION #####################
+calculate_win_prob_prediction_testing <- function(matchup_df,
+                                          probability_model) {
   
+  matchup_df <- matchup_df %>%
+    mutate(
+      Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2),
+      Win_Probability = if_else(Score_Difference < 0,
+                                100 - Win_Probability,
+                                Win_Probability)
+    )
+  
+  return(matchup_df)
+}
   
   
   
