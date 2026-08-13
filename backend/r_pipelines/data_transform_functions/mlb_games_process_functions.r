@@ -1916,29 +1916,29 @@ calculate_total_scores <- function(matchup_df) {
     mutate(
       # HIGH importance (Gini > 7)
       Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
-      Home_Batting_Score = Home_Batting_Score * 1.0,
+      Home_Batting_Score = Home_Batting_Score * 0.8,
       
       Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
-      Away_Batting_Score = Away_Batting_Score * 1.0,
+      Away_Batting_Score = Away_Batting_Score * 0.8,
       
       # MEDIUM importance (Gini 6–6.5)
-      Home_Pitching_Score = Home_Pitching_Score * 0.6,
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.6,
+      Home_Pitching_Score = Home_Pitching_Score * 0.5,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
       
-      Away_Pitching_Score = Away_Pitching_Score * 0.6,,
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.6,
+      Away_Pitching_Score = Away_Pitching_Score * 0.5,,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
       
       # LOW importance (Gini < 5)
-      Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
+      Home_Team_Record_Score = Home_Team_Record_Score * 0.25,
       
-      Away_Team_Record_Score = Away_Team_Record_Score * 0.3,
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.25,
       
       # REALLY LOW importance (Gini < 1)
       Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
-      Home_Context_Score = Home_Context_Score * 0.1,
+      Home_Context_Score = Home_Context_Score * 0.3,
       
       Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
-      Away_Context_Score = Away_Context_Score * 0.1,
+      Away_Context_Score = Away_Context_Score * 0.3,
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
@@ -1958,7 +1958,7 @@ calculate_total_scores <- function(matchup_df) {
         Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
         TRUE ~ "Tie"
       ),
-      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6) * 0.25
     )
          
   return(matchup_df)
@@ -2568,20 +2568,27 @@ calculate_total_scores_testing <- function(matchup_df) {
   matchup_df <- matchup_df %>%
     mutate(
       # HIGH importance (Gini > 7)
-      Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
-      Home_Batting_Score = Home_Batting_Score * 1.0,
-      Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
-      Away_Batting_Score = Away_Batting_Score * 1.0,
+      Home_Pitcher_Score = Home_Pitcher_Score * 1.2,
+      Home_Batting_Score = Home_Batting_Score * .5,
+      Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
+      Away_Batting_Score = Away_Batting_Score * .5,
       
       # MEDIUM importance (Gini 6–6.5)
-      Home_Pitching_Score = Home_Pitching_Score * 0.6,
-      Away_Pitching_Score = Away_Pitching_Score * 0.6,
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.6,
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.6,
+      Home_Pitching_Score = Home_Pitching_Score * 0.3,
+      Away_Pitching_Score = Away_Pitching_Score * 0.3,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
       
       # LOW importance (Gini < 5)
       Home_Team_Record_Score = Home_Team_Record_Score * 0.3,
-      Away_Team_Record_Score = Away_Team_Record_Score * 0.3
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.3,
+      
+      # REALLY LOW importance (Gini < 1)
+      Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
+      Home_Context_Score = Home_Context_Score * 0.1,
+      
+      Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
+      Away_Context_Score = Away_Context_Score * 0.1
     )
   
   
@@ -2602,7 +2609,7 @@ calculate_total_scores_testing <- function(matchup_df) {
         Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
         TRUE ~ "Tie"
       ),
-      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6) * .25
     )
   
   return(matchup_df)
@@ -2626,7 +2633,27 @@ calculate_win_prob_prediction_testing <- function(matchup_df,
 }
   
   
+reduce_weighted_scores <- function(matchup_df) {
+  matchup_df <- matchup_df %>%
+    mutate(
+      Home_Pitcher_Score = Home_Pitcher_Score / 1.2,
+      Home_Batting_Score = Home_Batting_Score / 0.5,
+      Home_Pitching_Score = Home_Pitching_Score / 0.3,
+      Home_Context_Score = Home_Context_Score / 0.3,
+      Home_Team_Record_Score = Home_Team_Record_Score / 0.3,
+      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score / 0.1,
+      Home_Team_Split_Score = Home_Team_Split_Score / 0.5,
+      Away_Pitcher_Score = Away_Pitcher_Score / 1.2,
+      Away_Batting_Score = Away_Batting_Score / 0.5,
+      Away_Pitching_Score = Away_Pitching_Score / 0.3,
+      Away_Context_Score = Away_Context_Score / 0.3,
+      Away_Team_Record_Score = Away_Team_Record_Score / 0.3,
+      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score / 0.1,
+      Away_Team_Split_Score = Away_Team_Split_Score / 0.5
+    )
   
+  return (matchup_df)
+} 
   
   
   
