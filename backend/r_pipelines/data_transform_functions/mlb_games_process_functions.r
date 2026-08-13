@@ -1915,17 +1915,17 @@ calculate_total_scores <- function(matchup_df) {
   matchup_df <- matchup_df %>%
     mutate(
       # HIGH importance (Gini > 7)
-      Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
-      Home_Batting_Score = Home_Batting_Score * 0.8,
+      Home_Pitcher_Score = Home_Pitcher_Score * 1.2,
+      Home_Batting_Score = Home_Batting_Score * 1.0,
       
-      Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
-      Away_Batting_Score = Away_Batting_Score * 0.8,
+      Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
+      Away_Batting_Score = Away_Batting_Score * 1.0,
       
       # MEDIUM importance (Gini 6–6.5)
-      Home_Pitching_Score = Home_Pitching_Score * 0.5,
+      Home_Pitching_Score = Home_Pitching_Score * 0.6,
       Home_Team_Split_Score = Home_Team_Split_Score * 0.5,
       
-      Away_Pitching_Score = Away_Pitching_Score * 0.5,,
+      Away_Pitching_Score = Away_Pitching_Score * 0.6,
       Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
       
       # LOW importance (Gini < 5)
