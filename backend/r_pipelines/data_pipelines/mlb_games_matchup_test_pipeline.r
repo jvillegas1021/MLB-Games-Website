@@ -157,16 +157,8 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   
   matchup_display_df <- create_final_display_matchup_df(matchup_df)
   
-  ############################# create historical matchup df ##################################
-  
-  historical_matchup_final_df <- create_historical_matchup_df(matchup_display_df, historical_matchup_df)
-  
-  ############################ create final active matchup df #################################
-  
-  active_matchup_final_df <- create_active_matchup_df(matchup_display_df, historical_matchup_df)
-  
-  ########################### push to sql ####################################
+
   
   
-  return(active_matchup_final_df)
+  return(matchup_display_df)
 }
