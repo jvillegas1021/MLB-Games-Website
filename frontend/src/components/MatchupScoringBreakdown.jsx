@@ -75,17 +75,7 @@ export default function MatchupScoringBreakdown({ matchup }) {
             dividerIcon='⚔️'
         />
 
-        {/* 7 — Power Score */}
-        <h3 style={{ marginTop: "25px" }}>Power Score</h3>
-        <ScoreBar 
-            awayValue={matchup.Away_Power_Score}
-            homeValue={matchup.Home_Power_Score}
-            awayColor={away_team_color}
-            homeColor={home_team_color}
-            dividerIcon='💥'
-        />
-
-        {/* 8 — Team Record Score */}
+        {/* 7 — Team Record Score */}
         <h3 style={{ marginTop: "25px" }}>Team Record Score</h3>
         <ScoreBar 
             awayValue={matchup.Away_Team_Record_Score}
