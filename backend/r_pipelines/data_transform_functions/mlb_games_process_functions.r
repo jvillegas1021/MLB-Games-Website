@@ -1935,10 +1935,10 @@ calculate_total_scores <- function(matchup_df) {
       
       # REALLY LOW importance (Gini < 1)
       Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
-      Home_Context_Score = Home_Context_Score * 0.3,
+      Home_Context_Score = Home_Context_Score * 0,
       
       Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
-      Away_Context_Score = Away_Context_Score * 0.3,
+      Away_Context_Score = Away_Context_Score * 0,
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
@@ -1958,7 +1958,7 @@ calculate_total_scores <- function(matchup_df) {
         Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
         TRUE ~ "Tie"
       ),
-      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6) * 0.25
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
     )
          
   return(matchup_df)
@@ -1972,7 +1972,7 @@ calculate_win_prob_prediction <- function(matchup_df,
     
   matchup_df <- matchup_df %>%
   mutate(
-      Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2),
+      Win_Probability = round((predict(probability_model, newdata = matchup_df, type = "response") * 100), 2) + 2.5,
       Win_Probability = if_else(Score_Difference < 0,
                                 100 - Win_Probability,
                                 Win_Probability)
