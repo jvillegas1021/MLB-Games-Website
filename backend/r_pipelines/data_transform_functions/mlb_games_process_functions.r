@@ -1948,16 +1948,15 @@ calculate_total_scores <- function(matchup_df) {
     mutate(
       Home_Team_Total_Score = rowSums(across(all_of(home_scoring_columns)), na.rm = TRUE),
       Away_Team_Total_Score = rowSums(across(all_of(away_scoring_columns)), na.rm = TRUE),
-      Predicted_Winner = case_when(
-        Home_Team_Total_Score > Away_Team_Total_Score ~ Home_Team,
-        Home_Team_Total_Score < Away_Team_Total_Score ~ Away_Team,
-        TRUE ~ "Tie"
+      
+     Predicted_Winner = case_when(
+         Home_Team_Total_Score >= Away_Team_Total_Score ~ Home_Team,
+         Home_Team_Total_Score < Away_Team_Total_Score ~ Away_Team
       ),
-      Predicted_Loser = case_when(
-        Home_Team_Total_Score > Away_Team_Total_Score ~ Away_Team,
-        Home_Team_Total_Score < Away_Team_Total_Score ~ Home_Team,
-        TRUE ~ "Tie"
+     Predicted_Loser = if_else(
+          Predicted_Winner == Home_Team, Away_Team, Home_Team
       ),
+     
       Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
     )
          
