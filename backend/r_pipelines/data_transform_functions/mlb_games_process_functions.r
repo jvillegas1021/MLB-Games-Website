@@ -1916,10 +1916,10 @@ calculate_total_scores <- function(matchup_df) {
     mutate(
       # HIGH importance (Gini > 7)
       Home_Pitcher_Score = Home_Pitcher_Score * 1.2,
-      Home_Batting_Score = Home_Batting_Score * .8,
+      Home_Batting_Score = Home_Batting_Score * 1.0,
       
       Away_Pitcher_Score = Away_Pitcher_Score * 1.2,
-      Away_Batting_Score = Away_Batting_Score * 0.8,
+      Away_Batting_Score = Away_Batting_Score * 1.0,
       
       # MEDIUM importance (Gini 6–6.5)
       Home_Pitching_Score = Home_Pitching_Score * 0.3,
@@ -1929,15 +1929,15 @@ calculate_total_scores <- function(matchup_df) {
       Away_Team_Split_Score = Away_Team_Split_Score * 0.5,
       
       # LOW importance (Gini < 5)
-      Home_Team_Record_Score = Home_Team_Record_Score * 0.5,
+      Home_Team_Record_Score = Home_Team_Record_Score * 0.0,
       
-      Away_Team_Record_Score = Away_Team_Record_Score * 0.5,
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.0,
       
       # REALLY LOW importance (Gini < 1)
-      Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
+      Home_Pitcher_vs_Away_Team_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.0,
       Home_Context_Score = Home_Context_Score * 0,
       
-      Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
+      Away_Pitcher_vs_Away_Team_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.0,
       Away_Context_Score = Away_Context_Score * 0,
     )
   
