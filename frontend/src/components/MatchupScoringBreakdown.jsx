@@ -64,26 +64,6 @@ export default function MatchupScoringBreakdown({ matchup }) {
             homeColor={home_team_color}
             dividerIcon='⚖️'
         />
-
-        {/* 6 — Pitcher vs Lineup Score */}
-        <h3 style={{ marginTop: "25px" }}>Pitcher vs Lineup Score</h3>
-        <ScoreBar 
-            awayValue={matchup.Away_Pitcher_vs_Home_Batting_Score}
-            homeValue={matchup.Home_Pitcher_vs_Away_Batting_Score}
-            awayColor={away_team_color}
-            homeColor={home_team_color}
-            dividerIcon='⚔️'
-        />
-
-        {/* 7 — Team Record Score */}
-        <h3 style={{ marginTop: "25px" }}>Team Record Score</h3>
-        <ScoreBar 
-            awayValue={matchup.Away_Team_Record_Score}
-            homeValue={matchup.Home_Team_Record_Score}
-            awayColor={away_team_color}
-            homeColor={home_team_color}
-            dividerIcon='📈'
-        />
         </div>
   </div>
 );
