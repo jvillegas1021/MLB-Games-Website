@@ -2,7 +2,7 @@
 
 ###################### GET DATA FROM DATABASE ############################################################
 
-get_data_from_database <- function(table_name) {
+get_data_from_database <- function(table_name, statement = NULL) {
 
   con <- dbConnect(
     RPostgres::Postgres(),
@@ -14,9 +14,13 @@ get_data_from_database <- function(table_name) {
     sslmode = Sys.getenv("DB_SSLMODE")
   )
 
-  query <- paste0('SELECT
-    *
-  FROM ', table_name)
+  if (is.null(statement)) {
+    statement <- paste0("SELECT *")
+  } else {
+    statement <- statement
+  }
+  
+  query <- paste0(statement, " FROM ", table_name)
   
   df <- dbGetQuery(con, query)                    
   
@@ -24,4 +28,6 @@ get_data_from_database <- function(table_name) {
   
   return(df)
 }
+
+
 
