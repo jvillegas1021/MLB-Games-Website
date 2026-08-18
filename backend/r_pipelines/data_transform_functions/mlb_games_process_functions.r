@@ -483,12 +483,12 @@ calculate_starting_pitcher_scores <- function(matchup_df,
                                                                  label = "Away_Pitcher_Score")        
     
     matchup_df <- matchup_df %>%
-    left_join(home_starting_pitcher_total_score,
+    left_join(home_starting_pitcher_total_score %>% select(pitcher, Home_Pitcher_Score),
               by = c("Home_Pitcher_ID" = "pitcher")
               )
     
     matchup_df <- matchup_df %>%
-    left_join(away_starting_pitcher_total_score,
+    left_join(away_starting_pitcher_total_score %>% select(pitcher, Away_Pitcher_Score),
               by = c("Away_Pitcher_ID" = "pitcher")
               )
     
@@ -497,8 +497,16 @@ calculate_starting_pitcher_scores <- function(matchup_df,
         Home_Pitcher_Score = if_else(is.na(Home_Pitcher_Score), 0, Home_Pitcher_Score),
         Away_Pitcher_Score = if_else(is.na(Away_Pitcher_Score), 0, Away_Pitcher_Score)
       )
-
-    return(matchup_df)
+    
+    pitcher_season_scores_df <- rbind(home_starting_pitcher_season_score_df,
+                                      away_starting_pitcher_season_score_df)
+    
+    pitcher_recent_scores_df <- rbind(home_starting_pitcher_recent_score_df,
+                                      away_starting_pitcher_recent_score_df)
+    return(list(matchup_df,
+                pitcher_season_scores_df,
+                pitcher_recent_scores_df)
+           )
     }
 
 
@@ -543,8 +551,6 @@ starting_pitcher_season_scores <- function(starting_pitcher_season_df,
     }
     score_table$Season_Score <- rowSums(score_table[, -1])
     final_score_table <- score_table %>%
-        select(pitcher,
-              Season_Score) %>%
       mutate(
         pitcher = as.character(pitcher)
       )
@@ -590,7 +596,6 @@ starting_pitcher_recent_scores <- function(starting_pitcher_recent_form_df,
     }
     recent_score_table$Recent_Score <- rowSums(recent_score_table[ , -1])
     final_recent_score_table <- recent_score_table %>%
-        select(pitcher, Recent_Score) %>%
       mutate(
         pitcher = as.character(pitcher)
       )
@@ -630,10 +635,6 @@ starting_pitcher_total_score <- function(starting_pitcher_season_df,
           TRUE ~ Season_Score
         )
       )
-
-    # Select pitcher + dynamically named score column
-    final_score_table <- final_score_table %>%
-      select(pitcher, all_of(label))
 
     return(final_score_table)
     }
@@ -780,14 +781,22 @@ calculate_team_batting_scores <- function(matchup_df,
   
   
   matchup_df <- matchup_df %>%
-  left_join(home_team_batting_score_df,
+  left_join(home_team_batting_score_df %>% select(Home_Team, Game_ID, Home_Team_Batting_Lineup, Home_Batting_Score),
             by = c("Home_Team" = "Home_Team", "Game_ID" = "Game_ID")
             ) %>%
-  left_join(away_team_batting_score_df,
+  left_join(away_team_batting_score_df %>% select(Away_Team, Game_ID, Away_Team_Batting_Lineup, Away_Batting_Score),
             by = c("Away_Team" = "Away_Team", "Game_ID" = "Game_ID")
             )
 
-  return(matchup_df)
+  team_batting_scores_df <- rbind(home_team_batting_score_df %>% rename(Team_Name = Home_Team,
+                                                                        Batting_Score = Home_Batting_Score,
+                                                                        Lineup = Home_Team_Batting_Lineup),
+                                  away_team_batting_score_df %>% rename(Team_Name = Away_Team,
+                                                                        Batting_Score = Away_Batting_Score,
+                                                                        Lineup = Away_Team_Batting_Lineup))
+  return(list(matchup_df,
+              team_batting_scores_df)
+        )
   }
     
 ################################# CALCULATE TEAM BATTING SCORE##################################
@@ -835,8 +844,7 @@ team_batting_scores <- function(team_batting_df, benchmark_df, label, team_colum
   
   final_score_table <- cbind(
     id_columns,
-    score_table %>%
-      select(all_of(label))
+    score_table
   )
   
   final_score_table <- final_score_table %>%
@@ -1029,14 +1037,20 @@ calculate_team_pitching_scores <- function(matchup_df,
   
   
   matchup_df <- matchup_df %>%
-    left_join(home_team_pitching_score_df,
+    left_join(home_team_pitching_score_df %>% select(Home_Team, Game_ID, Home_Pitching_Score),
               by = c("Home_Team" = "Home_Team", "Game_ID" = "Game_ID")
     ) %>%
-    left_join(away_team_pitching_score_df,
+    left_join(away_team_pitching_score_df %>% select(Away_Team, Game_ID, Away_Pitching_Score),
               by = c("Away_Team" = "Away_Team", "Game_ID" = "Game_ID")
     )
   
-  return(matchup_df)
+  team_pitching_scores_df <- rbind(home_team_pitching_score_df %>% rename(Team_Name = Home_Team,
+                                                                          Pitching_Score = Home_Pitching_Score),
+                                   away_team_pitching_score_df %>% rename(Team_Name = Away_Team,
+                                                                          Pitching_Score = Away_Pitching_Score))
+  return(list(matchup_df,
+              team_pitching_scores_df)
+  )
 }
 
 ################################# CALCULATE TEAM PITCHING SCORE##################################
@@ -1083,8 +1097,7 @@ team_pitching_scores <- function(team_pitching_df, benchmark_df, label, team_col
   
   final_score_table <- cbind(
     id_columns,
-    score_table %>%
-      select(all_of(label))
+    score_table
   )
   
   return(final_score_table)
