@@ -90,25 +90,39 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   
   ############################################## calculate pitcher score #######################################################
   
-  matchup_df <- calculate_starting_pitcher_scores(matchup_df,
-                                                  starting_pitcher_filtered_df,
-                                                  starting_pitcher_recent_form_filtered_df,
-                                                  pitcher_season_benchmark_df,
-                                                  pitcher_recent_form_benchmark_df)
+  matchup_pitcher_score_list <- calculate_starting_pitcher_scores(matchup_df,
+                                                                  starting_pitcher_filtered_df,
+                                                                  starting_pitcher_recent_form_filtered_df,
+                                                                  pitcher_season_benchmark_df,
+                                                                  pitcher_recent_form_benchmark_df)
+  
+  matchup_df <- matchup_pitcher_score_list[[1]]
+  
+  pitcher_season_scores <- matchup_pitcher_score_list[[2]]
+  pitcher_recent_scores <- matchup_pitcher_score_list[[3]]
+  
   
   ###############################calculate team batting score#######################################################
   
-  matchup_df <- calculate_team_batting_scores(matchup_df,
-                                              team_batting_df,
-                                              hist_team_batting_df,
-                                              team_batting_benchmark_df)
+  matchup_batting_score_list <- calculate_team_batting_scores(matchup_df,
+                                                              team_batting_df,
+                                                              hist_team_batting_df,
+                                                              team_batting_benchmark_df)
+  
+  matchup_df <- matchup_batting_score_list[[1]]
+  
+  batting_scores <- matchup_batting_score_list[[2]]
   
   ###############################################calculate team pitching score########################################
   
-  matchup_df <- calculate_team_pitching_scores(matchup_df,
-                                               team_pitching_df,
-                                               hist_team_pitching_df,
-                                               team_pitching_benchmark_df)
+  matchup_pitching_score_list  <- calculate_team_pitching_scores(matchup_df,
+                                                                 team_pitching_df,
+                                                                 hist_team_pitching_df,
+                                                                 team_pitching_benchmark_df)
+  
+  matchup_df <- matchup_pitching_score_list[[1]]
+  
+  pitching_scores <- matchup_pitching_score_list[[2]]
   
   ################################# calculate team record score ############################
   matchup_df <- calculate_team_record_scores(matchup_df,
@@ -148,8 +162,6 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   
   matchup_df <- round_display_columns_for_matchup_df(matchup_df)
   
-  starting_pitcher_stats_df <- round_display_columns_for_pitcher_df(starting_pitcher_stats_df)
-  
   ############################### add betting logic / columns ####################
   matchup_df <- calculate_betting_logic(matchup_df)
   
@@ -169,10 +181,12 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   
   write_df_to_sql_replace('matchup_df', active_matchup_final_df)
   write_df_to_sql_append('historical_matchup_df', historical_matchup_final_df)
-  write_df_to_sql_replace('matchup_starting_pitcher_stats', starting_pitcher_filtered_df)
-  write_df_to_sql_replace('matchup_starting_pitcher_stats_current_year', starting_pitcher_current_year_filtered_df)
+  write_df_to_sql_replace('matchup_pitcher_season_scores', pitcher_season_scores)
+  write_df_to_sql_replace('matchup_pitcher_recent_scores', pitcher_recent_scores)
   write_df_to_sql_replace('matchup_team_batting_stats', team_batting_df)
+  write_df_to_sql_replace('matchup_team_batting_scores', batting_scores)
   write_df_to_sql_replace('matchup_team_pitching_stats', team_pitching_df)
+  write_df_to_sql_replace('matchup_team_pitching_scores', pitching_scores)
   
   return(invisible((TRUE)))
 }
