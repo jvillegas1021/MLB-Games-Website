@@ -106,7 +106,8 @@ function App() {
         alt="MLB Logo"
         style={{ width: "200px", marginBottom: "20px" }}
         />
-        <h1>MLB Matchups</h1>
+        <h1 className="shiny">The Diamond's Edge</h1>
+
         {matchups.map((m, i) => (
           <MatchupCard key={i} matchup={m} />
         ))}
