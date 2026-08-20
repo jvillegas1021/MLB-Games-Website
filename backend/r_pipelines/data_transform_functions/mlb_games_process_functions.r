@@ -55,6 +55,7 @@ create_matchup_df <- function(games_table) {
     times_est <- format(dt_est, "%I:%M:%p")
     
     matchup_df$Game_Time <- times_est
+    matchup_df$Game_Time <- gsub(":(AM|PM)$", " \\1", matchup_df$Game_Time)
     matchup_df$Game_Time_Stamp <- ymd_hms(games_table$gameDate, tz = 'UTC')
     matchup_df$Game_Date_Time_Parsed <- matchup_df$Game_Time_Stamp
 
