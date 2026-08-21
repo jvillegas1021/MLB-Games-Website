@@ -2126,24 +2126,24 @@ calculate_betting_logic <- function(matchup_df) {
       
       Place_Bet_Home_Open = (
         !is.na(Home_Team_Open_Edge) &
-          Home_Team_Open_Edge >= 0.3 * (60 - Home_Team_Model_Win_Probability)
+          Home_Team_Open_Edge >= 0.45 * (60 - Home_Team_Model_Win_Probability)
       ),
 
       
       Place_Bet_Home_Current = (
         !is.na(Home_Team_Current_Edge) &
-        Home_Team_Current_Edge >= 0.3 * (60 - Home_Team_Model_Win_Probability)
+        Home_Team_Current_Edge >= 0.45 * (60 - Home_Team_Model_Win_Probability)
       ),
       
       Place_Bet_Away_Open = (
         !is.na(Away_Team_Open_Edge) &
-          Away_Team_Open_Edge >= 0.3 * (60 - Away_Team_Model_Win_Probability)
+          Away_Team_Open_Edge >= 0.45 * (60 - Away_Team_Model_Win_Probability)
       ),
       
       
       Place_Bet_Away_Current = (
         !is.na(Home_Team_Current_Edge) &
-          Away_Team_Current_Edge >= 0.3 * (60 - Away_Team_Model_Win_Probability)
+          Away_Team_Current_Edge >= 0.45 * (60 - Away_Team_Model_Win_Probability)
       ),
       
       Bet_Team_Open = case_when(
