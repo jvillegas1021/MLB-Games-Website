@@ -1934,18 +1934,18 @@ calculate_total_scores <- function(matchup_df) {
       Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
       
       # MEDIUM importance .3 - .5
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.38,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.3,
       Home_Batting_Score = Home_Batting_Score * 0.3,
       
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.38,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.3,
       Away_Batting_Score = Away_Batting_Score * 0.3,
       
       # LOW importance .2
       
-      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.2,
+      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
       Home_Pitching_Score = Home_Pitching_Score * 0.2,
       
-      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.2,
+      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
       Away_Pitching_Score = Away_Pitching_Score * 0.2,
 
       
@@ -2126,24 +2126,24 @@ calculate_betting_logic <- function(matchup_df) {
       
       Place_Bet_Home_Open = (
         !is.na(Home_Team_Open_Edge) &
-          Home_Team_Open_Edge >= 0.4 * (60 - Home_Team_Model_Win_Probability)
+          Home_Team_Open_Edge >= 0.3 * (60 - Home_Team_Model_Win_Probability)
       ),
 
       
       Place_Bet_Home_Current = (
         !is.na(Home_Team_Current_Edge) &
-        Home_Team_Current_Edge >= 0.4 * (60 - Home_Team_Model_Win_Probability)
+        Home_Team_Current_Edge >= 0.3 * (60 - Home_Team_Model_Win_Probability)
       ),
       
       Place_Bet_Away_Open = (
         !is.na(Away_Team_Open_Edge) &
-          Away_Team_Open_Edge >= 0.4 * (60 - Away_Team_Model_Win_Probability)
+          Away_Team_Open_Edge >= 0.3 * (60 - Away_Team_Model_Win_Probability)
       ),
       
       
       Place_Bet_Away_Current = (
         !is.na(Home_Team_Current_Edge) &
-          Away_Team_Current_Edge >= 0.4 * (60 - Away_Team_Model_Win_Probability)
+          Away_Team_Current_Edge >= 0.3 * (60 - Away_Team_Model_Win_Probability)
       ),
       
       Bet_Team_Open = case_when(
