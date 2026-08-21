@@ -2525,21 +2525,24 @@ calculate_overall_betting_accuracy <- function(curated_results_df, final_results
 ################## calculate underdog accuracy picks ###############
 calculate_underdog_accuracy <- function(curated_results_df, final_results_df) {
   underdog_df <- curated_results_df %>%
-    drop_na(Bet_Team_Favorite_Underdog_Current) %>%
-    filter(Bet_Team_Favorite_Underdog_Current == 'Underdog')
+    drop_na(Underdog_Open) %>%  
+    filter(Predicted_Winner == Underdog_Open)   
   
-  total_underdog_picks <- nrow(underdog_df)
-  total_correct_underdog_picks <- sum(underdog_df$Correct_Prediction)
+  total_underdog_predictions <- nrow(underdog_df)
+  total_correct_underdog_predictions <- sum(underdog_df$Correct_Prediction)
   
-  underdog_correct_pick_percentage <- round((total_correct_underdog_picks / total_underdog_picks) * 100, 2)
+  underdog_correct_prediction_percentage <- round(
+    (total_correct_underdog_predictions / total_underdog_predictions) * 100,
+    2
+  )
   
-  
-  final_results_df$underdog_picks <- total_underdog_picks
-  final_results_df$correct_underdog_picks <- total_correct_underdog_picks
-  final_results_df$underdog_accuracy <- underdog_correct_pick_percentage
+  final_results_df$underdog_predictions <- total_underdog_predictions
+  final_results_df$correct_underdog_predictions <- total_correct_underdog_predictions
+  final_results_df$underdog_accuracy <- underdog_correct_prediction_percentage
   
   return(final_results_df)
 }
+
 
 ################### calculate win prob accuracy ##################
 calculate_win_probability_accuracy <- function(curated_results_df, final_results_df) {
