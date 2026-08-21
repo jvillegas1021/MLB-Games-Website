@@ -2590,25 +2590,25 @@ calculate_total_scores_testing <- function(matchup_df) {
       Away_Pitcher_Score = Away_Pitcher_Score * 0.6,
       
       # MEDIUM importance .3 - .5
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.0,
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.1,
       Home_Batting_Score = Home_Batting_Score * 0.4,
       
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.0,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.1,
       Away_Batting_Score = Away_Batting_Score * 0.4,
       
       # LOW importance .2
       
-      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.1,
-      Home_Pitching_Score = Home_Pitching_Score * 0.2,
+      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.15,
+      Home_Pitching_Score = Home_Pitching_Score * 0.0,
       
-      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.1,
-      Away_Pitching_Score = Away_Pitching_Score * 0.2,
+      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.15,
+      Away_Pitching_Score = Away_Pitching_Score * 0.0,
 
       
       # LOW importance .1
-      Home_Team_Record_Score = Home_Team_Record_Score * 0.1,
+      Home_Team_Record_Score = Home_Team_Record_Score * 0.5,
       
-      Away_Team_Record_Score = Away_Team_Record_Score * 0.1,
+      Away_Team_Record_Score = Away_Team_Record_Score * 0.5,
       
     )
   
@@ -2633,6 +2633,7 @@ calculate_total_scores_testing <- function(matchup_df) {
   return(matchup_df)
   
 }
+
   
   
 ##################### CALCULATE WIN PROB AND PREDICTION #####################
