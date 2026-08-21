@@ -146,8 +146,6 @@ export default function MatchupCard({ matchup }) {
             <p> Moneyline: {matchup.Moneyline}</p>
             <p> 
               <span style={{ fontWeight: 600}}>Best Bet: </span>
-              <span className="team-title"
-              style={{fontWeight: 600, color: best_bet_color}}>{matchup.Bet_Team_Current}</span>
               <img
                 src={`/mlb_logos/${matchup.Bet_Team_Current}.png`}
                 onError={(e) => { e.target.src = "/mlb_logos/MLB-Logo.png"; }}
@@ -157,8 +155,6 @@ export default function MatchupCard({ matchup }) {
             </p>
             <p>
               <span style={{ fontWeight: 600}}>Predicted Winner: </span>
-              <span className="team-title"
-              style={{fontWeight: 600, color: predicted_winner_color}}>{matchup.Predicted_Winner}</span>
               <img
                 src={`/mlb_logos/${matchup.Predicted_Winner}.png`}
                 onError={(e) => { e.target.src = "/mlb_logos/MLB-Logo.png"; }}
