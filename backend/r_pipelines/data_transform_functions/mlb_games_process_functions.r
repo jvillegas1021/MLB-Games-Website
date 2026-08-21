@@ -1928,31 +1928,32 @@ calculate_total_scores <- function(matchup_df) {
   
   matchup_df <- matchup_df %>%
     mutate(
-      # HIGH importance (Gini > 7)
+      # HIGH importance 1
       Home_Pitcher_Score = Home_Pitcher_Score * 1.0,
-      Home_Batting_Score = Home_Batting_Score * 0.8,
       
       Away_Pitcher_Score = Away_Pitcher_Score * 1.0,
-      Away_Batting_Score = Away_Batting_Score * 0.8,
       
-      # MEDIUM importance (Gini 6–6.5)
-      Home_Pitching_Score = Home_Pitching_Score * 0.3,
-      Home_Team_Split_Score = Home_Team_Split_Score * 0.25,
+      # MEDIUM importance .3 - .5
+      Home_Team_Split_Score = Home_Team_Split_Score * 0.38,
+      Home_Batting_Score = Home_Batting_Score * 0.3,
       
-      Away_Pitching_Score = Away_Pitching_Score * 0.3,
-      Away_Team_Split_Score = Away_Team_Split_Score * 0.25,
+      Away_Team_Split_Score = Away_Team_Split_Score * 0.38,
+      Away_Batting_Score = Away_Batting_Score * 0.3,
       
-      # LOW importance (Gini < 5)
+      # LOW importance .2
+      
+      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.2,
+      Home_Pitching_Score = Home_Pitching_Score * 0.2,
+      
+      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.2,
+      Away_Pitching_Score = Away_Pitching_Score * 0.2,
+
+      
+      # LOW importance .1
       Home_Team_Record_Score = Home_Team_Record_Score * 0.1,
       
       Away_Team_Record_Score = Away_Team_Record_Score * 0.1,
       
-      # REALLY LOW importance (Gini < 1)
-      Home_Pitcher_vs_Away_Batting_Score = Home_Pitcher_vs_Away_Batting_Score * 0.05,
-      Home_Context_Score = Home_Context_Score * 0,
-      
-      Away_Pitcher_vs_Home_Batting_Score = Away_Pitcher_vs_Home_Batting_Score * 0.05,
-      Away_Context_Score = Away_Context_Score * 0
     )
   
   home_scoring_columns <- str_subset(names(matchup_df), '^Home_.*_Score$')
@@ -1963,16 +1964,16 @@ calculate_total_scores <- function(matchup_df) {
       Home_Team_Total_Score = rowSums(across(all_of(home_scoring_columns)), na.rm = TRUE),
       Away_Team_Total_Score = rowSums(across(all_of(away_scoring_columns)), na.rm = TRUE),
       
-     Predicted_Winner = if_else(
-          Home_Team_Total_Score >= Away_Team_Total_Score, Home_Team, Away_Team
-          ),
-     Predicted_Loser = if_else(
-          Predicted_Winner == Home_Team, Away_Team, Home_Team
+      Predicted_Winner = if_else(
+        Home_Team_Total_Score >= Away_Team_Total_Score, Home_Team, Away_Team
       ),
-     
-      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6) * 0.8
+      Predicted_Loser = if_else(
+        Predicted_Winner == Home_Team, Away_Team, Home_Team
+      ),
+      
+      Score_Difference = round(Home_Team_Total_Score - Away_Team_Total_Score, 6)
     )
-         
+  
   return(matchup_df)
   
   }
