@@ -40,7 +40,7 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   # odds table
   mlb_games_odds_df <- get_data_from_database('mlb_games_odds_df')
   # probability model
-  prob_model <- load_rds("win_prob_model")
+  prob_model <- load_rds("new_win_prob_model")
   # historical matchup df table
   historical_matchup_df <- get_data_from_database('historical_matchup_df')
   
@@ -90,25 +90,39 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   
   ############################################## calculate pitcher score #######################################################
   
-  matchup_df <- calculate_starting_pitcher_scores(matchup_df,
-                                                  starting_pitcher_filtered_df,
-                                                  starting_pitcher_recent_form_filtered_df,
-                                                  pitcher_season_benchmark_df,
-                                                  pitcher_recent_form_benchmark_df)
+  matchup_pitcher_score_list <- calculate_starting_pitcher_scores(matchup_df,
+                                                                  starting_pitcher_filtered_df,
+                                                                  starting_pitcher_recent_form_filtered_df,
+                                                                  pitcher_season_benchmark_df,
+                                                                  pitcher_recent_form_benchmark_df)
+  
+  matchup_df <- matchup_pitcher_score_list[[1]]
+  
+  pitcher_season_scores <- matchup_pitcher_score_list[[2]]
+  pitcher_recent_scores <- matchup_pitcher_score_list[[3]]
+  
   
   ###############################calculate team batting score#######################################################
   
-  matchup_df <- calculate_team_batting_scores(matchup_df,
-                                              team_batting_df,
-                                              hist_team_batting_df,
-                                              team_batting_benchmark_df)
+  matchup_batting_score_list <- calculate_team_batting_scores(matchup_df,
+                                                              team_batting_df,
+                                                              hist_team_batting_df,
+                                                              team_batting_benchmark_df)
+  
+  matchup_df <- matchup_batting_score_list[[1]]
+  
+  batting_scores <- matchup_batting_score_list[[2]]
   
   ###############################################calculate team pitching score########################################
   
-  matchup_df <- calculate_team_pitching_scores(matchup_df,
-                                               team_pitching_df,
-                                               hist_team_pitching_df,
-                                               team_pitching_benchmark_df)
+  matchup_pitching_score_list  <- calculate_team_pitching_scores(matchup_df,
+                                                                 team_pitching_df,
+                                                                 hist_team_pitching_df,
+                                                                 team_pitching_benchmark_df)
+  
+  matchup_df <- matchup_pitching_score_list[[1]]
+  
+  pitching_scores <- matchup_pitching_score_list[[2]]
   
   ################################# calculate team record score ############################
   matchup_df <- calculate_team_record_scores(matchup_df,
@@ -134,7 +148,7 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   
   ###############################################calculate total score##########################################
   
-  matchup_df <- calculate_total_scores(matchup_df)
+  matchup_df <- calculate_total_scores_testing(matchup_df)
   
   ################################### Calculate win prob ####################################
   
@@ -148,8 +162,6 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   
   matchup_df <- round_display_columns_for_matchup_df(matchup_df)
   
-  starting_pitcher_stats_df <- round_display_columns_for_pitcher_df(starting_pitcher_stats_df)
-  
   ############################### add betting logic / columns ####################
   matchup_df <- calculate_betting_logic(matchup_df)
   
@@ -157,8 +169,9 @@ mlb_games_matchup_test_pipeline <- function(game_date = as.Date(format(Sys.time(
   
   matchup_display_df <- create_final_display_matchup_df(matchup_df)
   
-
+  ############################# create historical matchup df ##################################
   
+  print(matchup_display_df)
   
-  return(matchup_display_df)
+  return(invisible((TRUE)))
 }
