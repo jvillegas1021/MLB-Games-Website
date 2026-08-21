@@ -40,7 +40,7 @@ mlb_games_matchup_pipeline <- function(game_date = as.Date(format(Sys.time(), tz
   # odds table
   mlb_games_odds_df <- get_data_from_database('mlb_games_odds_df')
   # probability model
-  prob_model <- load_rds("win_prob_model")
+  prob_model <- load_rds("new_win_prob_model")
   # historical matchup df table
   historical_matchup_df <- get_data_from_database('historical_matchup_df')
   
