@@ -52,7 +52,7 @@ game_dates <- seq(
   to   = as.Date("2026-08-20"),
   by   = "day"
 )
-
+source("backend/r_pipelines/data_transform_functions/mlb_games_process_functions.r")
 matchup_df_list <- list()
 
 for (game_date in game_dates) {
@@ -201,8 +201,12 @@ cleaned_final_matchup_df <- final_matchup_df %>%
     home_team_is_winner = if_else(
       teams.home.score > teams.away.score,
       1,
-      0)
+      0),
+    winner = if_else(
+      teams.home.score > teams.away.score, Home_Team, Away_Team
     )
+  )
+cleaned_final_matchup_df
 
 home_scoring_columns <- str_subset(names(cleaned_final_matchup_df), '^Home_.*_Score$')
 away_scoring_columns <- str_subset(names(cleaned_final_matchup_df), '^Away_.*_Score$')
@@ -216,16 +220,33 @@ prepared_cor_df <- cleaned_final_matchup_df %>%
     -Away_Context_Score
   )
 
-cor_df <- cor(
-  prepared_cor_df,
-  prepared_cor_df$home_team_is_winner,
-  use = "pairwise.complete.obs"
-)
 
 model <- glm(
   home_team_is_winner ~ Score_Difference,
   data = cleaned_final_matchup_df,
   family = binomial()
 )
+summary(model)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
