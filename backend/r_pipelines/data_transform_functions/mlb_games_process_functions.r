@@ -2120,29 +2120,45 @@ calculate_betting_logic <- function(matchup_df) {
         home_open_odds < away_open_odds ~ Away_Team,
         TRUE ~ NA_character_
       ),
-
+      
+      Home_Tier_Threshold = case_when(
+        Home_Team_Model_Win_Probability >= 50 & Home_Team_Model_Win_Probability < 55 ~ 1.0,
+        Home_Team_Model_Win_Probability >= 55 & Home_Team_Model_Win_Probability < 60 ~ 5.0,
+        Home_Team_Model_Win_Probability >= 60 & Home_Team_Model_Win_Probability < 62.5 ~ 7.5,
+        TRUE ~ Inf
+      ),
+      
+      Away_Tier_Threshold = case_when(
+        Away_Team_Model_Win_Probability >= 50 & Away_Team_Model_Win_Probability < 55 ~ 1.0,
+        Away_Team_Model_Win_Probability >= 55 & Away_Team_Model_Win_Probability < 60 ~ 5.0,
+        Away_Team_Model_Win_Probability >= 60 & Away_Team_Model_Win_Probability < 62.5 ~ 7.5,
+        TRUE ~ Inf
+      ),
+      
+      
       Place_Bet_Home_Current = (
         Home_Team_Model_Win_Probability >= 50 &
-          Home_Team_Model_Win_Probability < 55 &
-          Home_Team_Current_Edge > 1.0
+          Home_Team_Model_Win_Probability < 62.5 &
+          Home_Team_Current_Edge > Home_Tier_Threshold
       ),
       
       Place_Bet_Away_Current = (
         Away_Team_Model_Win_Probability >= 50 &
-          Away_Team_Model_Win_Probability < 55 &
-          Away_Team_Current_Edge > 1.0
+          Away_Team_Model_Win_Probability < 62.5 &
+          Away_Team_Current_Edge > Away_Tier_Threshold
       ),
+      
       
       Place_Bet_Home_Open = (
         Home_Team_Model_Win_Probability >= 50 &
-          Home_Team_Model_Win_Probability < 55 &
-          Home_Team_Open_Edge > 1.0
+          Home_Team_Model_Win_Probability < 62.5 &
+          Home_Team_Open_Edge > Home_Tier_Threshold
       ),
       
       Place_Bet_Away_Open = (
         Away_Team_Model_Win_Probability >= 50 &
-          Away_Team_Model_Win_Probability < 55 &
-          Away_Team_Open_Edge > 1.0
+          Away_Team_Model_Win_Probability < 62.5 &
+          Away_Team_Open_Edge > Away_Tier_Threshold
       ),
       
       Bet_Team_Current = case_when(
