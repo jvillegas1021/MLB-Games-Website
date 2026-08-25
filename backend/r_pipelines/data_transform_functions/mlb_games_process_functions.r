@@ -2121,21 +2121,9 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_character_
       ),
       
-      Home_Tier_Threshold = case_when(
-        Home_Team_Model_Win_Probability >= 50 & Home_Team_Model_Win_Probability < 55 ~ 1.0,
-        Home_Team_Model_Win_Probability >= 55 & Home_Team_Model_Win_Probability < 60 ~ 5.0,
-        Home_Team_Model_Win_Probability >= 60 & Home_Team_Model_Win_Probability < 62.5 ~ 7.5,
-        TRUE ~ Inf
-      ),
-      
-      Away_Tier_Threshold = case_when(
-        Away_Team_Model_Win_Probability >= 50 & Away_Team_Model_Win_Probability < 55 ~ 1.0,
-        Away_Team_Model_Win_Probability >= 55 & Away_Team_Model_Win_Probability < 60 ~ 5.0,
-        Away_Team_Model_Win_Probability >= 60 & Away_Team_Model_Win_Probability < 62.5 ~ 7.5,
-        TRUE ~ Inf
-      ),
-      
-      
+      Home_Tier_Threshold  = edge_from_prob(Home_Team_Model_Win_Probability)
+      Away_Tier_Threshold  = edge_from_prob(Away_Team_Model_Win_Probability)
+
       Place_Bet_Home_Current = (
         Home_Team_Model_Win_Probability >= 50 &
           Home_Team_Model_Win_Probability < 62.5 &
@@ -2681,8 +2669,18 @@ reduce_weighted_scores <- function(matchup_df) {
   
   return (matchup_df)
 } 
-  
-  
+
+edge_from_prob <- function(p) {
+  if (p < 50 || p >= 62.5) return(Inf)
+
+  if (p <= 55) return(1.0)
+
+  # 55–60: scale from 1.0 up to 5.0
+  # 55 → 1.0, 60 → 5.0
+  1.0 + (p - 55) * (4.0 / 5.0)
+}
+
+
   
   
   
