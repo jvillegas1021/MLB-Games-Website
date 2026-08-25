@@ -2121,7 +2121,7 @@ calculate_betting_logic <- function(matchup_df) {
         TRUE ~ NA_character_
       ),
       
-      Home_Tier_Threshold  = edge_from_prob(Home_Team_Model_Win_Probability)
+      Home_Tier_Threshold  = edge_from_prob(Home_Team_Model_Win_Probability),
       Away_Tier_Threshold  = edge_from_prob(Away_Team_Model_Win_Probability)
 
       Place_Bet_Home_Current = (
