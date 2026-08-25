@@ -2671,14 +2671,15 @@ reduce_weighted_scores <- function(matchup_df) {
 } 
 
 edge_from_prob <- function(p) {
-  if (p < 50 || p >= 62.5) return(Inf)
-
-  if (p <= 55) return(1.0)
-
-  # 55–60: scale from 1.0 up to 5.0
-  # 55 → 1.0, 60 → 5.0
-  1.0 + (p - 55) * (4.0 / 5.0)
+  if_else(
+    p < 50 | p >= 62.5, Inf,
+    if_else(
+      p <= 55, 1.0,
+      1.0 + (p - 55) * (4.0 / 5.0)
+    )
+  )
 }
+
 
 
   
