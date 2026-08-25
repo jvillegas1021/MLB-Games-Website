@@ -26,7 +26,7 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c("tidyverse", "DBI", "RPostgres"))'
+            Rscript -e 'install.packages(c("tidyverse", "DBI", "RPostgres", "curl"))'
 
       - name: Run MLB matchup update
         run: Rscript backend/r_pipelines/scripts/update_mlb_games_matchup_script.r
