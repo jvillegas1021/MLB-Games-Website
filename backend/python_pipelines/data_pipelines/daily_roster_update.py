@@ -19,6 +19,7 @@ def run_daily_roster_update(game_date=None):
     teams_playing = games_today_with_teams_and_lineups_and_bullpens(game_date)
 
     if not teams_playing:
+        print("No Lineups to Update")
         return
 
 
@@ -56,6 +57,7 @@ def run_daily_roster_update(game_date=None):
         pitching_completed = (game_id, team_id) in historical_pitching_idx
         
         if batting_completed and pitching_completed:
+            print(f"{team_name} team batting and pitching already updated!")
             continue
 
         if not batting_completed:
@@ -68,6 +70,7 @@ def run_daily_roster_update(game_date=None):
                                                       batting_df_statcast)
         
             if team_batting_df is not None:
+                print(f"{team_name} team batting updated!")
                 all_team_batting_df_list.append(team_batting_df)
             
         if not pitching_completed :
@@ -81,6 +84,7 @@ def run_daily_roster_update(game_date=None):
                                                         pitching_df_statcast)
 
             if team_pitching_df is not None:
+                print(f"{team_name} team pitching updated!")
                 all_team_pitching_df_list.append(team_pitching_df)
 
     
