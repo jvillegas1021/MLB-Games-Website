@@ -76,16 +76,18 @@ def games_today_with_teams_and_lineups_and_bullpens(game_date = None) -> list[tu
 
     # Covers None, {}, [], "", 0
     if not games_today:
+        print("No Games Today")
         return []
 
     # MLB-specific: no games scheduled
     if games_today.get("dates") == []:
+        print("No Games Today")
         return []
 
 
     teams_playing = []
 
-    for game in range(len(games_today['dates'][0]['games'])):
+    for game in range(0, len(games_today['dates'][0]['games'])):
         game_obj = games_today['dates'][0]['games'][game]
 
 
@@ -95,29 +97,15 @@ def games_today_with_teams_and_lineups_and_bullpens(game_date = None) -> list[tu
 
         game_id = game_obj['gamePk']
         game_official_date = game_obj['officialDate']
-        
-        lineups = game_obj.get('lineups')
-        # If no lineups at all, skip this game
-        if not lineups:
-            continue
-    
+
         # -------------------------
         # AWAY TEAM
         # -------------------------
         away_team = game_obj['teams']['away']['team']
         away_name = away_team['name']
         away_id = away_team['id']
-    
-        away_lineup = []
-        if 'awayPlayers' in lineups:
-            for p in lineups['awayPlayers']:
-                away_lineup.append(p['id'])
-        else:
-            continue  # away lineup not hydrated yet
-    
-        away_bullpen = games_today_with_pitchers(away_id)
-        teams_playing.append((game_id, game_official_date, away_name, away_id, away_lineup, away_bullpen))
-    
+
+            
         # -------------------------
         # HOME TEAM
         # -------------------------
@@ -125,15 +113,33 @@ def games_today_with_teams_and_lineups_and_bullpens(game_date = None) -> list[tu
         home_name = home_team['name']
         home_id = home_team['id']
     
+        
+        lineups = game_obj.get('lineups')
+        # If no lineups at all, skip this game
+        if not lineups:
+            print(f"No lineups for {game_id} - {away_name} vs {home_name}")
+            continue
+
+    
+        away_lineup = []
+        if 'awayPlayers' in lineups:
+            for p in lineups['awayPlayers']:
+                away_lineup.append(p['id'])
+            away_bullpen = games_today_with_pitchers(away_id)
+            teams_playing.append((game_id, game_official_date, away_name, away_id, away_lineup, away_bullpen))
+            print(f"{game_id} - Lineup Update Possible - {away_name}.")
+        else:
+            print(f"{game_id} - No Lineup - {away_name}.")
+    
         home_lineup = []
         if 'homePlayers' in lineups:
             for p in lineups['homePlayers']:
                 home_lineup.append(p['id'])
+            home_bullpen = games_today_with_pitchers(home_id)
+            teams_playing.append((game_id, game_official_date, home_name, home_id, home_lineup, home_bullpen))
+            print(f"{game_id} - Lineup Update Possible - {home_name}.")
         else:
-            continue  # home lineup not hydrated yet
-    
-        home_bullpen = games_today_with_pitchers(home_id)
-        teams_playing.append((game_id, game_official_date, home_name, home_id, home_lineup, home_bullpen))
+            print(f"{game_id} - No Lineup - {home_name}.")
     
     return teams_playing
 
